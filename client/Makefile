@@ -4,6 +4,10 @@ ASSETS_PATH := assets/
 CERTS_PATH  := certs/
 VENDOR_PATH := vendor/
 
+JQUERY_VERSION  := 1.7.1
+JQUERY_DOWNLOAD := http://code.jquery.com/jquery-$(JQUERY_VERSION).min.js
+JQUERY_PATH     := $(VENDOR_PATH)jquery/
+
 BOOTSTRAP_DOWNLOAD := http://twitter.github.com/bootstrap/assets/bootstrap.zip
 BOOTSTRAP_PATH     := $(VENDOR_PATH)bootstrap/
 
@@ -16,12 +20,13 @@ BACKBONE_PATH     := $(VENDOR_PATH)backbone/
 BUNDLE_SCRIPTS := $(ASSETS_PATH)scripts/dependencies.bundle.js
 BUNDLE_STYLES  := $(ASSETS_PATH)styles/dependencies.bundle.css
 
-MONGOOSE_DOWNLOAD     := http://mongoose.googlecode.com/files/mongoose-3.0.tgz
+MONGOOSE_VERSION      := 3.0
+MONGOOSE_DOWNLOAD     := http://mongoose.googlecode.com/files/mongoose-$(MONGOOSE_VERSION).tgz
 MONGOOSE_PATH         := $(VENDOR_PATH)mongoose/
 MONGOOSE_OPTIONS      := -D'CONFIG_FILE=\"../../mongoose.config\"'
 MONGOOSE_CERT_SUBJECT := /C=GB/ST=Oxfordshire/L=Oxford/O=Fake Company Ltd./OU=IT/CN=localhost
 
-.PHONY: default all install-dependencies install-bootstrap install-underscore install-backbone bundle-dependencies bundle-component bundle-scripts bundle-styles compile-local-server issue-local-certificate
+.PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone bundle-dependencies bundle-component bundle-scripts bundle-styles compile-local-server issue-local-certificate
 
 default:
 	@echo "No default $(MAKE) target configured."
@@ -29,7 +34,15 @@ default:
 
 all: install-dependencies bundle-dependencies compile-local-server
 
-install-dependencies: install-bootstrap install-underscore install-backbone
+install-dependencies: install-jquery install-bootstrap install-underscore install-backbone
+
+install-script:
+	@mkdir -p "$($(SCRIPT)_PATH)"
+	@curl -so "$($(SCRIPT)_PATH)$(shell basename $($(SCRIPT)_DOWNLOAD))" "$($(SCRIPT)_DOWNLOAD)"
+	@echo "$($(SCRIPT)_DOWNLOAD) successfully installed in $($(SCRIPT)_PATH)."
+
+install-jquery:
+	@$(MAKE) install-script SCRIPT=JQUERY
 
 install-bootstrap:
 	$(eval BOOTSTRAP_TMP := /tmp/$(shell basename $(BOOTSTRAP_DOWNLOAD)))
@@ -58,18 +71,12 @@ install-bootstrap:
 	@echo "$(BOOTSTRAP_DOWNLOAD) successfully installed in $(BOOTSTRAP_PATH)."
 
 install-underscore:
-	@mkdir -p "$(UNDERSCORE_PATH)"
-	@curl -so "$(UNDERSCORE_DOWNLOAD)" "$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))"
-	@echo "$(UNDERSCORE_DOWNLOAD) successfully installed in $(UNDERSCORE_PATH)."
+	@$(MAKE) install-script SCRIPT=UNDERSCORE
 
 install-backbone:
-	@mkdir -p "$(BACKBONE_PATH)"
-	@curl -so "$(BACKBONE_DOWNLOAD)" "$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))"
-	@echo "$(BACKBONE_DOWNLOAD) successfully installed in $(BACKBONE_PATH)."
+	@$(MAKE) install-script SCRIPT=BACKBONE
 
-bundle-dependencies:
-	@$(MAKE) bundle-scripts 1>/dev/null
-	@$(MAKE) bundle-styles  1>/dev/null
+bundle-dependencies: bundle-scripts bundle-styles
 	@echo "Bundles created successfully."
 
 bundle-component:
@@ -81,21 +88,19 @@ bundle-component:
 	done
 	@echo "Bundle '$(COMPONENT)' created successfully."
 
-bundle-scripts: COMPONENT    := SCRIPTS
-bundle-scripts: DEPENDENCIES := \
-	"$(BOOTSTRAP_PATH)scripts/bootstrap.min.js" \
-	"$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))" \
-	"$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))"
-bundle-scripts: bundle-component
+bundle-scripts:
+	@$(MAKE) bundle-component \
+		COMPONENT=SCRIPTS \
+		DEPENDENCIES='"$(JQUERY_PATH)$(shell basename $(JQUERY_DOWNLOAD))" "$(BOOTSTRAP_PATH)scripts/bootstrap.min.js" "$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))" "$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))"'
 
-bundle-styles: COMPONENT    := STYLES
-bundle-styles: DEPENDENCIES := \
-	"$(BOOTSTRAP_PATH)styles/bootstrap.min.css"
-bundle-styles: bundle-component
+bundle-styles:
+	@$(MAKE) bundle-component \
+		COMPONENT=STYLES \
+		DEPENDENCIES='"$(BOOTSTRAP_PATH)styles/bootstrap.min.css"'
 
 issue-local-certificate:
 	@mkdir -p "$(CERTS_PATH)"
-	@openssl req -x509 -nodes -days 3650 -subj "$(MONGOOSE_CERT_SUBJECT)" -newkey rsa:1024 -keyout "$(CERTS_PATH)mongoose.pem" -out "$(CERTS_PATH)mongoose.pem" 1>/dev/null
+	@openssl req -x509 -nodes -days 3650 -subj "$(MONGOOSE_CERT_SUBJECT)" -newkey rsa:1024 -keyout "$(CERTS_PATH)mongoose.pem" -out "$(CERTS_PATH)mongoose.pem"
 	@echo 'Certificate for local development server issued successfully.'
 
 compile-local-server: issue-local-certificate
@@ -105,5 +110,5 @@ compile-local-server: issue-local-certificate
 		rm -Rf "$(MONGOOSE_PATH)" ; \
 	fi
 	@tar zxf "$(MONGOOSE_TMP)" -C "$(VENDOR_PATH)"
-	@( cd "$(MONGOOSE_PATH)" && $(MAKE) $(PLATFORM) COPT=$(MONGOOSE_OPTIONS) 1>/dev/null )
+	@( cd "$(MONGOOSE_PATH)" && $(MAKE) $(PLATFORM) COPT=$(MONGOOSE_OPTIONS) )
 	@echo 'Local development server compiled successfully.'
