@@ -1,8 +1,8 @@
 PLATFORM := linux
 
-ASSETS_PATH := assets/
-CERTS_PATH  := certs/
-VENDOR_PATH := vendor/
+CERTS_PATH  := system/config/certs/
+DEPENDENCIES_PATH := system/modules/core/
+VENDOR_PATH := system/cache/core/
 
 JQUERY_VERSION  := 1.7.1
 JQUERY_DOWNLOAD := http://code.jquery.com/jquery-$(JQUERY_VERSION).min.js
@@ -17,13 +17,13 @@ UNDERSCORE_PATH     := $(VENDOR_PATH)underscore/
 BACKBONE_DOWNLOAD := http://documentcloud.github.com/backbone/backbone-min.js
 BACKBONE_PATH     := $(VENDOR_PATH)backbone/
 
-BUNDLE_SCRIPTS := $(ASSETS_PATH)scripts/dependencies.bundle.js
-BUNDLE_STYLES  := $(ASSETS_PATH)styles/dependencies.bundle.css
+BUNDLE_SCRIPTS := $(DEPENDENCIES_PATH)scripts/dependencies.bundle.js
+BUNDLE_STYLES  := $(DEPENDENCIES_PATH)styles/dependencies.bundle.css
 
 MONGOOSE_VERSION      := 3.0
 MONGOOSE_DOWNLOAD     := http://mongoose.googlecode.com/files/mongoose-$(MONGOOSE_VERSION).tgz
 MONGOOSE_PATH         := $(VENDOR_PATH)mongoose/
-MONGOOSE_OPTIONS      := -D'CONFIG_FILE=\"../../mongoose.config\"'
+MONGOOSE_OPTIONS      := -D'CONFIG_FILE=\"../../../config/mongoose.config\"'
 MONGOOSE_CERT_SUBJECT := /C=GB/ST=Oxfordshire/L=Oxford/O=Fake Company Ltd./OU=IT/CN=localhost
 
 .PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone bundle-dependencies bundle-component bundle-scripts bundle-styles compile-local-server issue-local-certificate
