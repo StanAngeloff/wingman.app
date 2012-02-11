@@ -1,5 +1,8 @@
-VENDOR_PATH := vendor/
+PLATFORM := linux
+
 ASSETS_PATH := assets/
+CERTS_PATH  := certs/
+VENDOR_PATH := vendor/
 
 BOOTSTRAP_DOWNLOAD := http://twitter.github.com/bootstrap/assets/bootstrap.zip
 BOOTSTRAP_PATH     := $(VENDOR_PATH)bootstrap/
@@ -13,13 +16,18 @@ BACKBONE_PATH     := $(VENDOR_PATH)backbone/
 BUNDLE_SCRIPTS := $(ASSETS_PATH)scripts/dependencies.bundle.js
 BUNDLE_STYLES  := $(ASSETS_PATH)styles/dependencies.bundle.css
 
-.PHONY: default all install-dependencies install-bootstrap install-underscore install-backbone bundle-dependencies bundle-component bundle-scripts bundle-styles
+MONGOOSE_DOWNLOAD     := http://mongoose.googlecode.com/files/mongoose-3.0.tgz
+MONGOOSE_PATH         := $(VENDOR_PATH)mongoose/
+MONGOOSE_OPTIONS      := -D'CONFIG_FILE=\"../../mongoose.config\"'
+MONGOOSE_CERT_SUBJECT := /C=GB/ST=Oxfordshire/L=Oxford/O=Fake Company Ltd./OU=IT/CN=localhost
+
+.PHONY: default all install-dependencies install-bootstrap install-underscore install-backbone bundle-dependencies bundle-component bundle-scripts bundle-styles compile-local-server issue-local-certificate
 
 default:
 	@echo "No default $(MAKE) target configured."
 	@exit 1
 
-all: install-dependencies bundle-dependencies
+all: install-dependencies bundle-dependencies compile-local-server
 
 install-dependencies: install-bootstrap install-underscore install-backbone
 
@@ -84,3 +92,18 @@ bundle-styles: COMPONENT    := STYLES
 bundle-styles: DEPENDENCIES := \
 	"$(BOOTSTRAP_PATH)styles/bootstrap.min.css"
 bundle-styles: bundle-component
+
+issue-local-certificate:
+	@mkdir -p "$(CERTS_PATH)"
+	@openssl req -x509 -nodes -days 3650 -subj "$(MONGOOSE_CERT_SUBJECT)" -newkey rsa:1024 -keyout "$(CERTS_PATH)mongoose.pem" -out "$(CERTS_PATH)mongoose.pem" 1>/dev/null
+	@echo 'Certificate for local development server issued successfully.'
+
+compile-local-server: issue-local-certificate
+	$(eval MONGOOSE_TMP := /tmp/$(shell basename $(MONGOOSE_DOWNLOAD)))
+	@curl -so "$(MONGOOSE_TMP)" "$(MONGOOSE_DOWNLOAD)"
+	@if [ -d "$(MONGOOSE_PATH)" ]; then \
+		rm -Rf "$(MONGOOSE_PATH)" ; \
+	fi
+	@tar zxf "$(MONGOOSE_TMP)" -C "$(VENDOR_PATH)"
+	@( cd "$(MONGOOSE_PATH)" && $(MAKE) $(PLATFORM) COPT=$(MONGOOSE_OPTIONS) 1>/dev/null )
+	@echo 'Local development server compiled successfully.'
