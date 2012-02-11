@@ -26,7 +26,7 @@ MONGOOSE_PATH         := $(VENDOR_PATH)mongoose/
 MONGOOSE_OPTIONS      := -D'CONFIG_FILE=\"../../../config/mongoose.config\"'
 MONGOOSE_CERT_SUBJECT := /C=GB/ST=Oxfordshire/L=Oxford/O=Fake Company Ltd./OU=IT/CN=localhost
 
-.PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone bundle-dependencies bundle-component bundle-scripts bundle-styles compile-local-server issue-local-certificate
+.PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone bundle-dependencies bundle-component bundle-scripts bundle-styles issue-local-certificate compile-local-server start-local-server
 
 default:
 	@echo "No default $(MAKE) target configured."
@@ -112,3 +112,9 @@ compile-local-server: issue-local-certificate
 	@tar zxf "$(MONGOOSE_TMP)" -C "$(VENDOR_PATH)"
 	@( cd "$(MONGOOSE_PATH)" && $(MAKE) $(PLATFORM) COPT=$(MONGOOSE_OPTIONS) )
 	@echo 'Local development server compiled successfully.'
+
+start-local-server:
+	@if [ ! -f "$(MONGOOSE_PATH)mongoose" ]; then \
+		$(MAKE) compile-local-server; \
+	fi
+	@"$(MONGOOSE_PATH)mongoose"
