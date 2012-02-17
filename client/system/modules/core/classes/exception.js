@@ -42,15 +42,15 @@ ArgumentException.prototype = new RuntimeException();
 ArgumentException.prototype.constructor = ArgumentException;
 
 /**
- * Create a new instance of an <code>ClassDoesNotExistException</code>.
+ * Create a new instance of an <code>TypeException</code>.
  *
- * @class An exception indicating a class did not exist in scope.
+ * @class An exception indicating a type requirement was not met.
  * @augments RuntimeException
  */
-function ClassDoesNotExistException() {
+function TypeException() {
   RuntimeException.apply(this, arguments);
-  this.name = 'ClassDoesNotExistException';
+  this.name = 'TypeException';
 };
 
-ClassDoesNotExistException.prototype = new RuntimeException();
-ClassDoesNotExistException.prototype.constructor = ClassDoesNotExistException;
+TypeException.prototype = new RuntimeException();
+TypeException.prototype.constructor = TypeException;

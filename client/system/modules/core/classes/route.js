@@ -4,9 +4,18 @@
  * @class A router handles all navigational aspects of an application.
  */
 var Route = Backbone.Router.extend({
+  initialize: function() {
+    this._uuid = 0;
+  },
+  uuid: function() {
+    return (this._uuid ++);
+  },
   process: function(options, args) {
-    Guard.expectOptions('Route.process', options, ['controller', 'action']);
-    var controller = Util.newInstanceOf('Controller' + Util.upperCaseFirst(options.controller));
+    Guard.expectHash('Route.process', 'options', options, {
+      controller: Controller,
+      action: true
+    });
+    var controller = new (options.controller)();
   }
 });
 
@@ -27,26 +36,38 @@ Route.instance = function() {
  * <p>When you pass in <code>false</code> as the route, default empty and root routes will be created.
  * The empty route is needed to ensure your controller action gets called even when the URL doesn't contain any fragments.</p>
  *
- * @param {String|RegExp} route The route to match, either as a string or a regular expression.
+ * <dl>
+ *   <dt><code>options</code></dt>
+ *   <dd><code>controller</code> The controller type which will be initialized when the route is navigated to.</dd>
+ *   <dd><code>action</code> The controller action to call.</dd>
+ *   <dd><code>name</code> Optional name for the route(s).</dd>
+ * </dl>
+ *
+ * @param {String|RegExp|Array} routes The route to match, either as a string, a regular expression or an array of those.
  * @param {Object} options A hash of options for this route. <code>{ controller, action }</code> must be specified.
  * @see <a href="http://documentcloud.github.com/backbone/#Router-route">Router (Backbone.js)</a>
  * @return {Route} A reference to self (useful for chaining methods).
  */
-Route.match = function(route, options) {
-  Guard.expectOptions('Route.match', options, ['controller', 'action']);
-  if (route === false) {
-    route = /^$|^\/$/;
+Route.match = function(routes, options) {
+  Guard.expectHash('Route.match', 'options', options, {
+    controller: Controller,
+    action: true
+  });
+  var instance = Route.instance();
+  if ( ! ('name' in options)) {
+    options.name = options.action + '-' + instance.uuid();
   }
-  if ( ! _.isArray(route)) {
-    route = [route];
+  if (routes === false) {
+    routes = /^$|^\/$/;
   }
-  if (route.length === 1 && route[0] === '/') {
-    route.push('');
+  if ( ! _.isArray(routes)) {
+    routes = [routes];
   }
-  var instance = Route.instance(),
-      name = (options.controller + '.' + options.action);
-  _.each(route, function(each) {
-    instance.route(each, name, function() {
+  if (routes.length === 1 && routes[0] === '/') {
+    routes.push('');
+  }
+  _.each(routes, function(route) {
+    instance.route(route, options.name, function() {
       instance.process(options, Array.prototype.slice.call(arguments));
     });
   });

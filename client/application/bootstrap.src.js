@@ -9,7 +9,7 @@
 <!--#include file="application/classes/controller/login.js" -->
 
 Route
-  .match(false, { controller: 'login', action: 'index' })
+  .match(false, { controller: ControllerLogin, action: 'index' })
   .find();
 
 }).call(this.Wingman = {});
