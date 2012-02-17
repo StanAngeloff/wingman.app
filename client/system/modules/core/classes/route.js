@@ -85,7 +85,10 @@ Route.match = function(routes, options) {
  */
 Route.find = function() {
   if (typeof (Backbone.history) === 'undefined') {
-    throw new RuntimeException("'Route.find' called without any routes set up. See 'Route.match'.", 1329505536);
+    throw new RuntimeException(__("':method' called without any routes set up. See ':relative'.", {
+      ':method': 'Route.find',
+      ':relative': 'Route.match'
+    }), 1329505536);
   }
   Backbone.history.start();
   return this;

@@ -1,5 +1,5 @@
 var ControllerLogin = Controller.extend({
   initialize: function() {
-    console.log('XXX: Not implemented.');
+    console.log(__('XXX: Not implemented.'));
   }
 });

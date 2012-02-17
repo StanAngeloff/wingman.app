@@ -13,7 +13,11 @@ var Guard = {
    */
   expectType: function(callee, name, object, type) {
     if ( ! _['is' + type](object)) {
-      throw new ArgumentException("'" + callee + "' expects '" + name + "' to be of type '" + type + "'.", 1329505522);
+      throw new ArgumentException(__("':callee' expects ':name' to be of type ':type'.", {
+        ':callee': callee,
+        ':name': name,
+        ':type': type
+      }), 1329505522);
     }
     return this;
   },
@@ -35,10 +39,19 @@ var Guard = {
     this.expectType(callee, name, object, 'Object');
     _.each(expected, function(value, key) {
       if ( ! (key in object)) {
-        throw new ArgumentException("'" + callee + "' expects '" + name + "' to have a value for '" + key + "'.", 1329505525);
+        throw new ArgumentException(__("':callee' expects ':name' to have a value for ':key'.", {
+          ':callee': callee,
+          ':name': name,
+          ':key': key,
+        }), 1329505525);
       }
       if (_.isObject(value) && ( ! (object[key].prototype instanceof value))) {
-        throw new TypeException("'" + callee + "' expects '" + name + "[" + key + "]' to be of type '" + (value.name || value.constructor.name || value.toString()) + "'.", 1329505529);
+        throw new TypeException(__("':callee' expects ':name[:key]' to be of type ':type'.", {
+          ':callee': callee,
+          ':name': name,
+          ':key': key,
+          ':type': (value.name || value.constructor.name || value.toString())
+        }), 1329505529);
       }
     });
     return this;
