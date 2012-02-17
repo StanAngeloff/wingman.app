@@ -13,7 +13,7 @@ var Guard = {
    */
   expectType: function(callee, name, object, type) {
     if ( ! _['is' + type](object)) {
-      throw new ArgumentException("'" + callee + "' expects '" + name + "' to be of type '" + type + "'.");
+      throw new ArgumentException("'" + callee + "' expects '" + name + "' to be of type '" + type + "'.", 1329505522);
     }
     return this;
   },
@@ -35,10 +35,10 @@ var Guard = {
     this.expectType(callee, name, object, 'Object');
     _.each(expected, function(value, key) {
       if ( ! (key in object)) {
-        throw new ArgumentException("'" + callee + "' expects '" + name + "' to have a value for '" + key + "'.");
+        throw new ArgumentException("'" + callee + "' expects '" + name + "' to have a value for '" + key + "'.", 1329505525);
       }
       if (_.isObject(value) && ( ! (object[key].prototype instanceof value))) {
-        throw new TypeException("'" + callee + "' expects '" + name + "[" + key + "]' to be of type '" + (value.name || value.constructor.name || value.toString()) + "'.");
+        throw new TypeException("'" + callee + "' expects '" + name + "[" + key + "]' to be of type '" + (value.name || value.constructor.name || value.toString()) + "'.", 1329505529);
       }
     });
     return this;
