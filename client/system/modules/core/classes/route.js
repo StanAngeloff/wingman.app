@@ -1,12 +1,12 @@
-define('Route', ['Controller', 'Guard', 'I18n', 'RuntimeException'],
+define('Route', ['Controller', 'Guard', 'I18n', 'RuntimeError'],
 /**
  * @requires module:Controller
  * @requires module:Guard
  * @requires module:I18n
- * @requires module:Exception~RuntimeException
+ * @requires module:Error~RuntimeError
  * @exports Route
  */
-function(Controller, Guard, I18n, RuntimeException) {
+function(Controller, Guard, I18n, RuntimeError) {
   /**
    * Create a new instance of a router.
    *
@@ -101,11 +101,11 @@ function(Controller, Guard, I18n, RuntimeException) {
    *
    * @see <a href="http://documentcloud.github.com/backbone/#History-start">History (Backbone.js)</a>
    * @return {Route} A reference to self (useful for chaining methods).
-   * @throws {module:Exception~RuntimeException} If no routes have been registered.
+   * @throws {module:Error~RuntimeError} If no routes have been registered.
    */
   Route.find = function() {
     if (typeof (Backbone.history) === 'undefined') {
-      throw new RuntimeException(I18n.format("':method' called without any routes set up. See ':relative'.", {
+      throw new RuntimeError(I18n.format("':method' called without any routes set up. See ':relative'.", {
         ':method': 'Route.find',
         ':relative': 'Route.match'
       }), 1329505536);
