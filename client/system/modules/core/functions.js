@@ -29,6 +29,9 @@ function define(module, dependencies, block) {
       throw new Error("Circular dependency in module '" + module + " depends [" + dependencies.join(', ') + "]'.");
     };
     _.each(dependencies, function(dependency) {
+      if ( ! (dependency in __modules)) {
+        throw new Error("Broken dependency in module '" + module + "', dependency '" + dependency + "' was not satisfied.");
+      }
       args.push(__modules[dependency]());
     });
     exports = block.apply(block, args);
