@@ -79,3 +79,26 @@ function(RuntimeError) {
 
   return TypeError;
 });
+
+define('ResourceError', ['RuntimeError'],
+/**
+ * @exports Error
+ * @requires module:Error~RuntimeError
+ */
+function(RuntimeError) {
+  /**
+   * Create a new instance of an <code>ResourceError</code>.
+   *
+   * @class An error indicating a resource failed to load or experienced an issue while loading.
+   * @extends module:Error~RuntimeError
+   */
+  function ResourceError() {
+    RuntimeError.apply(this, arguments);
+    this.name = 'ResourceError';
+  };
+
+  ResourceError.prototype = new RuntimeError();
+  ResourceError.prototype.constructor = ResourceError;
+
+  return ResourceError;
+});

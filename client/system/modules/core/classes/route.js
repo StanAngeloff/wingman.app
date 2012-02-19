@@ -1,4 +1,4 @@
-define('Route', ['Controller', 'Guard', 'I18n', 'RuntimeError'],
+define('Route', ['Controller', 'Guard', 'I18n', 'ResourceError', 'RuntimeError'],
 /**
  * @requires module:Controller
  * @requires module:Guard
@@ -6,7 +6,7 @@ define('Route', ['Controller', 'Guard', 'I18n', 'RuntimeError'],
  * @requires module:Error~RuntimeError
  * @exports Route
  */
-function(Controller, Guard, I18n, RuntimeError) {
+function(Controller, Guard, I18n, ResourceError, RuntimeError) {
   /**
    * Create a new instance of a router.
    *
@@ -26,7 +26,14 @@ function(Controller, Guard, I18n, RuntimeError) {
         action: true
       });
       var invoke = function(instance) {
-        // XXX: instance[options.action].apply(instance, args);
+        if ( ! (options.action in instance)) {
+          throw new ResourceError(I18n.format("Route ':route' (:name) failed as the requested controller does not have a method for action ':action' defined.", {
+            ':route': options.route,
+            ':name': options.name,
+            ':action': options.action
+          }), 1329669800);
+        }
+        instance[options.action].apply(instance, args);
       };
       if (_.isObject(options.controller)) {
         invoke(new (options.controller));
@@ -87,7 +94,9 @@ function(Controller, Guard, I18n, RuntimeError) {
     }
     _.each(routes, function(route) {
       instance.route(route, options.name, function() {
-        instance.process(options, Array.prototype.slice.call(arguments));
+        instance.process(_.extend({}, options, {
+          route: route
+        }), Array.prototype.slice.call(arguments));
       });
     });
     return this;
