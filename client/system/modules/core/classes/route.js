@@ -14,6 +14,7 @@ function(Controller, Guard, I18n, RuntimeException) {
    */
   var Route = Backbone.Router.extend({
     initialize: function() {
+      /** @private */
       this._uuid = 0;
     },
     uuid: function() {
@@ -21,11 +22,19 @@ function(Controller, Guard, I18n, RuntimeException) {
     },
     process: function(options, args) {
       Guard.expectHash('Route.process', 'options', options, {
-        controller: Controller,
+        controller: true,
         action: true
       });
-      var controller = new (options.controller)(),
-          action = controller[options.action];
+      var invoke = function(instance) {
+        // XXX: instance[options.action].apply(instance, args);
+      };
+      if (_.isObject(options.controller)) {
+        invoke(new (options.controller));
+      } else {
+        define(['Controller/' + options.controller], function(klass) {
+          invoke(new klass());
+        });
+      }
     }
   });
 
@@ -60,7 +69,7 @@ function(Controller, Guard, I18n, RuntimeException) {
    */
   Route.match = function(routes, options) {
     Guard.expectHash('Route.match', 'options', options, {
-      controller: Controller,
+      controller: true,
       action: true
     });
     var instance = Route.instance();

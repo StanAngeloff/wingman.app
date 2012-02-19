@@ -10,9 +10,9 @@
 
 <!--#include file="application/classes/controller/login.js" -->
 
-define(['Controller/Login', 'Route'], function(ControllerLogin, Route) {
+define(['Route'], function(Route) {
   Route
-    .match(false, { controller: ControllerLogin, action: 'index' })
+    .match(false, { controller: 'Login', action: 'index' })
     .find();
 });
 
