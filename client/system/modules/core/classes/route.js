@@ -16,14 +16,18 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
     initialize: function() {
       /** @private */
       this._uuid = 0;
+      /** @private */
+      this._controllers = {};
     },
     uuid: function() {
       return (this._uuid ++);
     },
     process: function(options, args) {
       Guard.expectHash('Route.process', 'options', options, {
+        route: true,
         controller: true,
-        action: true
+        action: true,
+        name: true
       });
       var invoke = function(instance) {
         if ( ! (options.action in instance)) {
@@ -35,11 +39,22 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
         }
         instance[options.action].apply(instance, args);
       };
-      if (_.isObject(options.controller)) {
-        invoke(new (options.controller));
+      this._instance(options.controller, options.name, invoke);
+    },
+    _instance: function(controller, name, block) {
+      if (name in this._controllers) {
+        return block(this._controllers[name]);
+      }
+      var self = this;
+      var cache = function(instance) {
+        self._controllers[name] = instance;
+        block(instance);
+      };
+      if (_.isObject(controller)) {
+        cache(new controller());
       } else {
-        define(['Controller/' + options.controller], function(klass) {
-          invoke(new klass());
+        define(['Controller/' + controller], function(klass) {
+          cache(new klass());
         })();
       }
     }
