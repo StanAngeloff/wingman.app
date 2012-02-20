@@ -5,7 +5,7 @@ var __modules = {};
  * Define a module with optional dependencies.
  *
  * @param {String} module Optional module ID. If this is omitted, no module is defined and instead <code>block</code> is called immediately.
- * @param {Array} dependencies Optional list of module IDs on which this module depends.
+ * @param {Array} dependencies Optional list of module IDs on which this module depends. If this is omitted, the arguments list of <code>block</code> will be used instead where all underscores will be converted to <code>'/'</code>.
  * @param {Function} block The module body. The function is called with arguments matching the given dependencies, if any.
  */
 function define(module, dependencies, block) {
@@ -21,7 +21,14 @@ function define(module, dependencies, block) {
     module = null;
   }
   if (dependencies === null) {
-    dependencies = [];
+    var signature = /^\s*function\s*\(([^)]+)\)/.exec(block.toString());
+    if (signature) {
+      dependencies = _.map(signature[1].split(','), function(value) {
+        return value.replace(/^\s+|\s+$/g, '').replace(/_/g, '/');
+      });
+    } else {
+      dependencies = [];
+    }
   }
   var evaluate = function() {
     var args = [], exports;

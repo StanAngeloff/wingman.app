@@ -4,7 +4,7 @@
  * @module Guard
  */
 
-define('Guard', ['I18n', 'ArgumentError', 'TypeError'],
+define('Guard',
 /**
  * @requires module:I18n
  * @requires module:Error~ArgumentError

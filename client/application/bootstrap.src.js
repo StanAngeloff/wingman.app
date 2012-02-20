@@ -10,7 +10,7 @@
 
 <!--#include file="application/classes/controller/login.js" -->
 
-define(['Route'], function(Route) {
+define(function(Route) {
   Route
     .match(false, { controller: 'Login', action: 'index' })
     .find();

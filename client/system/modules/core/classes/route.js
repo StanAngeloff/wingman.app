@@ -1,4 +1,4 @@
-define('Route', ['Controller', 'Guard', 'I18n', 'ResourceError', 'RuntimeError'],
+define('Route',
 /**
  * @requires module:Controller
  * @requires module:Guard

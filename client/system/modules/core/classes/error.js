@@ -34,7 +34,7 @@ function() {
   return RuntimeError;
 });
 
-define('ArgumentError', ['RuntimeError'],
+define('ArgumentError',
 /**
  * @exports Error
  * @requires module:Error~RuntimeError
@@ -57,7 +57,7 @@ function(RuntimeError) {
   return ArgumentError;
 });
 
-define('TypeError', ['RuntimeError'],
+define('TypeError',
 /**
  * @exports Error
  * @requires module:Error~RuntimeError
@@ -80,7 +80,7 @@ function(RuntimeError) {
   return TypeError;
 });
 
-define('ResourceError', ['RuntimeError'],
+define('ResourceError',
 /**
  * @exports Error
  * @requires module:Error~RuntimeError
