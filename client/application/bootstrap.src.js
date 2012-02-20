@@ -14,6 +14,6 @@ define(['Route'], function(Route) {
   Route
     .match(false, { controller: 'Login', action: 'index' })
     .find();
-});
+})();
 
 }).call(this.Wingman = {});

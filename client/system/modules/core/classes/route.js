@@ -40,7 +40,7 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
       } else {
         define(['Controller/' + options.controller], function(klass) {
           invoke(new klass());
-        });
+        })();
       }
     }
   });

@@ -40,11 +40,8 @@ function define(module, dependencies, block) {
     };
     return evaluate();
   };
-  if (module === null) {
-    evaluate();
-  } else {
-    __modules[module] = function() {
-      return evaluate.apply(evaluate, arguments);
-    };
-  }
+  __modules[module] = function() {
+    return evaluate.apply(evaluate, arguments);
+  };
+  return __modules[module];
 };
