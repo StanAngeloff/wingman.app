@@ -124,17 +124,18 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
    * by calling the configured controller action.</p>
    *
    * @see <a href="http://documentcloud.github.com/backbone/#History-start">History (Backbone.js)</a>
+   * @param {Object} options Optional hash of <code>{ key: value }</code> pairs to pass to Backbone.js.
    * @return {Route} A reference to self (useful for chaining methods).
    * @throws {module:Error~RuntimeError} If no routes have been registered.
    */
-  Route.find = function() {
+  Route.find = function(options) {
     if (typeof (Backbone.history) === 'undefined') {
       throw new RuntimeError(I18n.format("':method' called without any routes set up. See ':relative'.", {
         ':method': 'Route.find',
         ':relative': 'Route.match'
       }), 1329505536);
     }
-    Backbone.history.start();
+    Backbone.history.start(options);
     return this;
   };
 
