@@ -87,7 +87,7 @@ define('ResourceError',
  */
 function(RuntimeError) {
   /**
-   * Create a new instance of an <code>ResourceError</code>.
+   * Create a new instance of a <code>ResourceError</code>.
    *
    * @class An error indicating a resource failed to load or experienced an issue while loading.
    * @extends module:Error~RuntimeError
@@ -101,4 +101,27 @@ function(RuntimeError) {
   ResourceError.prototype.constructor = ResourceError;
 
   return ResourceError;
+});
+
+define('NotImplementedError',
+/**
+ * @exports Error
+ * @requires module:Error~RuntimeError
+ */
+function(RuntimeError) {
+  /**
+   * Create a new instance of a <code>NotImplementedError</code>.
+   *
+   * @class An error indicating a method that was called is abstract and no implementation is available.
+   * @extends module:Error~RuntimeError
+   */
+  function NotImplementedError() {
+    RuntimeError.apply(this, arguments);
+    this.name = 'NotImplementedError';
+  };
+
+  NotImplementedError.prototype = new RuntimeError();
+  NotImplementedError.prototype.constructor = NotImplementedError;
+
+  return NotImplementedError;
 });
