@@ -1,24 +1,23 @@
 PLATFORM := linux
 
 CERTS_PATH  := system/config/certs/
-DEPENDENCIES_PATH := system/modules/core/
 VENDOR_PATH := system/cache/core/
 
 JQUERY_VERSION  := 1.7.1
-JQUERY_DOWNLOAD := http://code.jquery.com/jquery-$(JQUERY_VERSION).min.js
+JQUERY_DOWNLOAD := http://code.jquery.com/jquery-$(JQUERY_VERSION).js
 JQUERY_PATH     := $(VENDOR_PATH)jquery/
 
 BOOTSTRAP_DOWNLOAD := http://twitter.github.com/bootstrap/assets/bootstrap.zip
 BOOTSTRAP_PATH     := $(VENDOR_PATH)bootstrap/
 
-UNDERSCORE_DOWNLOAD := http://documentcloud.github.com/underscore/underscore-min.js
+UNDERSCORE_DOWNLOAD := http://documentcloud.github.com/underscore/underscore.js
 UNDERSCORE_PATH     := $(VENDOR_PATH)underscore/
 
-BACKBONE_DOWNLOAD := http://documentcloud.github.com/backbone/backbone-min.js
+BACKBONE_DOWNLOAD := http://documentcloud.github.com/backbone/backbone.js
 BACKBONE_PATH     := $(VENDOR_PATH)backbone/
 
-BUNDLE_SCRIPTS := $(DEPENDENCIES_PATH)scripts/dependencies.bundle.js
-BUNDLE_STYLES  := $(DEPENDENCIES_PATH)styles/dependencies.bundle.css
+BUNDLE_SCRIPTS := $(VENDOR_PATH)scripts.bundle.js
+BUNDLE_STYLES  := $(VENDOR_PATH)styles.bundle.css
 
 MONGOOSE_VERSION      := 3.0
 MONGOOSE_DOWNLOAD     := http://mongoose.googlecode.com/files/mongoose-$(MONGOOSE_VERSION).tgz
@@ -53,19 +52,19 @@ install-bootstrap:
 	@mkdir -p "$(VENDOR_PATH)"
 	@unzip -qq "$(BOOTSTRAP_TMP)" -d "$(VENDOR_PATH)"
 	@for icons in 'glyphicons-halflings.png' 'glyphicons-halflings-white.png'; do \
-		sed -e "s#../img/$${icons}#'data:image/png;base64,$$( base64 -w0 "$(BOOTSTRAP_PATH)img/$${icons}" )'#" -i "$(BOOTSTRAP_PATH)css/bootstrap.min.css" ; \
+		sed -e "s#../img/$${icons}#data:image/png;base64,$$( base64 -w0 "$(BOOTSTRAP_PATH)img/$${icons}" )#" -i "$(BOOTSTRAP_PATH)css/bootstrap.css" ; \
 	done
 	@for alias in 'css > styles' 'img > images' 'js > scripts'; do \
 		mv "$(BOOTSTRAP_PATH)$${alias%% > *}" "$(BOOTSTRAP_PATH)$${alias##* > }" ; \
 	done
-	@for merge in 'styles/bootstrap-responsive.min.css > styles/bootstrap.min.css'; do \
+	@for merge in 'styles/bootstrap-responsive.css > styles/bootstrap.css'; do \
 		source="$(BOOTSTRAP_PATH)$${merge%% > *}" ; \
 		target="$(BOOTSTRAP_PATH)$${merge##* > }" ; \
 		echo           >> "$$target" ; \
 		cat "$$source" >> "$$target" ; \
 		rm  "$$source" ; \
 	done
-	@for garbage in 'images' 'scripts/bootstrap.js' 'styles/bootstrap.css' 'styles/bootstrap-responsive.css'; do \
+	@for garbage in 'images' 'scripts/bootstrap.min.js' 'styles/bootstrap.min.css' 'styles/bootstrap-responsive.min.css'; do \
 		rm -R "$(BOOTSTRAP_PATH)$${garbage}" ; \
 	done
 	@echo "$(BOOTSTRAP_DOWNLOAD) successfully installed in $(BOOTSTRAP_PATH)."
@@ -91,12 +90,12 @@ bundle-component:
 bundle-scripts:
 	@$(MAKE) bundle-component \
 		COMPONENT=SCRIPTS \
-		DEPENDENCIES='"$(JQUERY_PATH)$(shell basename $(JQUERY_DOWNLOAD))" "$(BOOTSTRAP_PATH)scripts/bootstrap.min.js" "$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))" "$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))"'
+		DEPENDENCIES='"$(JQUERY_PATH)$(shell basename $(JQUERY_DOWNLOAD))" "$(BOOTSTRAP_PATH)scripts/bootstrap.js" "$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))" "$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))"'
 
 bundle-styles:
 	@$(MAKE) bundle-component \
 		COMPONENT=STYLES \
-		DEPENDENCIES='"$(BOOTSTRAP_PATH)styles/bootstrap.min.css"'
+		DEPENDENCIES='"$(BOOTSTRAP_PATH)styles/bootstrap.css"'
 
 issue-local-certificate:
 	@mkdir -p "$(CERTS_PATH)"
