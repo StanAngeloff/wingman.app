@@ -16,6 +16,10 @@ UNDERSCORE_PATH     := $(VENDOR_PATH)underscore/
 BACKBONE_DOWNLOAD := http://documentcloud.github.com/backbone/backbone.js
 BACKBONE_PATH     := $(VENDOR_PATH)backbone/
 
+HANDLEBARS_VERSION  := 1.0.0.beta.6
+HANDLEBARS_DOWNLOAD := http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-$(HANDLEBARS_VERSION).js
+HANDLEBARS_PATH     := $(VENDOR_PATH)handlebars/
+
 BUNDLE_SCRIPTS := $(VENDOR_PATH)scripts.bundle.js
 BUNDLE_STYLES  := $(VENDOR_PATH)styles.bundle.css
 
@@ -25,7 +29,7 @@ MONGOOSE_PATH         := $(VENDOR_PATH)mongoose/
 MONGOOSE_OPTIONS      := -D'CONFIG_FILE=\"../../../config/mongoose.config\"'
 MONGOOSE_CERT_SUBJECT := /C=GB/ST=Oxfordshire/L=Oxford/O=Fake Company Ltd./OU=IT/CN=localhost
 
-.PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone bundle-dependencies bundle-component bundle-scripts bundle-styles issue-local-certificate compile-local-server start-local-server
+.PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone install-handlebars bundle-dependencies bundle-component bundle-scripts bundle-styles issue-local-certificate compile-local-server start-local-server
 
 default:
 	@echo "No default $(MAKE) target configured."
@@ -33,7 +37,7 @@ default:
 
 all: install-dependencies bundle-dependencies compile-local-server
 
-install-dependencies: install-jquery install-bootstrap install-underscore install-backbone
+install-dependencies: install-jquery install-bootstrap install-underscore install-backbone install-handlebars
 
 install-script:
 	@mkdir -p "$($(SCRIPT)_PATH)"
@@ -75,6 +79,9 @@ install-underscore:
 install-backbone:
 	@$(MAKE) install-script SCRIPT=BACKBONE
 
+install-handlebars:
+	@$(MAKE) install-script SCRIPT=HANDLEBARS
+
 bundle-dependencies: bundle-scripts bundle-styles
 	@echo "Bundles created successfully."
 
@@ -90,7 +97,7 @@ bundle-component:
 bundle-scripts:
 	@$(MAKE) bundle-component \
 		COMPONENT=SCRIPTS \
-		DEPENDENCIES='"$(JQUERY_PATH)$(shell basename $(JQUERY_DOWNLOAD))" "$(BOOTSTRAP_PATH)scripts/bootstrap.js" "$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))" "$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))"'
+		DEPENDENCIES='"$(JQUERY_PATH)$(shell basename $(JQUERY_DOWNLOAD))" "$(BOOTSTRAP_PATH)scripts/bootstrap.js" "$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))" "$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))" "$(HANDLEBARS_PATH)$(shell basename $(HANDLEBARS_DOWNLOAD))"'
 
 bundle-styles:
 	@$(MAKE) bundle-component \
