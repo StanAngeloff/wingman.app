@@ -22,7 +22,15 @@ function(I18n, ArgumentError, TypeError) {
      * @throws {module:Error~ArgumentError} If the type of <code>object</code> is not the expected one.
      */
     expectType: function(callee, name, object, type) {
-      if ( ! _['is' + type](object)) {
+      if (_.isObject(type)) {
+        if ( ! _.isObject(object) || ! (object.prototype instanceof type)) {
+          throw new TypeError(I18n.format("':callee' expects ':name' to be of type ':type'.", {
+            ':callee': callee,
+            ':name': name,
+            ':type': (type.name || type.constructor.name || type.toString())
+          }), 1329505529);
+        }
+      } else if ( ! _['is' + type](object)) {
         throw new ArgumentError(I18n.format("':callee' expects ':name' to be of type ':type'.", {
           ':callee': callee,
           ':name': name,
@@ -47,6 +55,7 @@ function(I18n, ArgumentError, TypeError) {
      */
     expectHash: function(callee, name, object, expected) {
       this.expectType(callee, name, object, 'Object');
+      var self = this;
       _.each(expected, function(value, key) {
         if ( ! (key in object)) {
           throw new ArgumentError(I18n.format("':callee' expects ':name' to have a value for ':key'.", {
@@ -55,13 +64,8 @@ function(I18n, ArgumentError, TypeError) {
             ':key': key,
           }), 1329505525);
         }
-        if (_.isObject(value) && ( ! (object[key].prototype instanceof value))) {
-          throw new TypeError(I18n.format("':callee' expects ':name[:key]' to be of type ':type'.", {
-            ':callee': callee,
-            ':name': name,
-            ':key': key,
-            ':type': (value.name || value.constructor.name || value.toString())
-          }), 1329505529);
+        if (_.isObject(value)) {
+          self.expectType(callee, name + '[' + key + ']', object[key], value);
         }
       });
       return this;
