@@ -4,7 +4,7 @@ define('Controller',
  */
 function() {
   /**
-   * Create a new instance of a controller.
+   * Create a new instance of a <code>Controller</code>.
    *
    * @class A controller responds to routed actions as the User navigates in the application.
    */
@@ -13,13 +13,14 @@ function() {
   };
 
   /**
-   * Initialize a newly created instance of a controller.
+   * Initialize a newly created instance of a <code>Controller</code>.
    */
   Controller.prototype.initialize = function() { };
 
   /**
-   * Define a new subclass of Controller with its own set of methods.
+   * Define a new subclass of <code>Controller</code> with its own set of methods.
    *
+   * @function
    * @return {Controller}
    */
   Controller.extend = Backbone.Router.extend;
