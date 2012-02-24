@@ -90,6 +90,12 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
    * @return {Route} A reference to self (useful for chaining methods).
    */
   Route.match = function(routes, options) {
+    if (_.isArray(options) || options.length === 2) {
+      options = {
+        controller: options[0],
+        action: options[1]
+      };
+    }
     Guard.expectHash('Route.match', 'options', options, {
       controller: true,
       action: true
