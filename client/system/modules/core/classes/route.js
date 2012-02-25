@@ -90,6 +90,9 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
    * @return {Route} A reference to self (useful for chaining methods).
    */
   Route.match = function(routes, options) {
+    if (typeof (options) === 'string' && ~options.indexOf('#')) {
+      options = options.split('#');
+    }
     if (_.isArray(options) || options.length === 2) {
       options = {
         controller: options[0],
