@@ -1,5 +1,5 @@
-define('View/Login/Index', function(I18n, View) {
-  return View.extend({
+define('View/Login/Index', function(I18n, View_Default) {
+  return View_Default.extend({
     _template: 'login/index',
     events: {
       'click': 'click'

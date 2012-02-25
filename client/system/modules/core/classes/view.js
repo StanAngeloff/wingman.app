@@ -15,11 +15,11 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
    *
    * @class A view performs all on-screen updates and handles any User interactions, e.g., clicks.
    */
-  function View() {
+  function View(template) {
     /** @private */
     this._engine || (this._engine = __engine);
     /** @private */
-    this._template || (this._template = null);
+    this._template || (this._template = template);
     /** @private */
     this._target || (this._target = '__page');
     this.initialize.apply(this, arguments);
@@ -42,33 +42,22 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
   /**
    * Get the contents of a template from the DOM.
    *
-   * @private
    * @param {String} template The template name where <code>'/'</code> acts as a delimiter.
    * @return {String}
    * @throws {module:Error~ResourceError} If no template DOM element was found.
    */
-  View.prototype._templateContents = function(template) {
+  View.prototype.templateContents = function(template) {
+    template || (template = this._template);
     var query = this._DOMQuery(template),
         $element = $(query);
     if ( ! $element.length) {
       throw new ResourceError(I18n.format("':method' could not find an element for template ':template', DOM query was ':query'.", {
-        ':method': 'View._templateContents',
+        ':method': 'View.templateContents',
         ':query': query,
         ':template': template
       }), 1330102703);
     }
     return $element.html();
-  };
-
-  /**
-   * Format a DOM element ID based on a template name.
-   *
-   * @private
-   * @param {String} template The template name where <code>'/'</code> acts as a delimiter.
-   * @return {String}
-   */
-  View.prototype._DOMQuery = function(template) {
-    return ('#__template-' + template.replace(/[\/_]/g, '-'));
   };
 
   /**
@@ -94,13 +83,24 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
       template = null;
     }
     template || (template = this._template);
-    var contents = this._templateContents(template),
-        block = (new this._engine).compile(template, contents);
+    var contents = this.templateContents(template),
+        block = this._engine.instance().compile(template, contents);
     Guard.expectType('View.render', 'block', block, 'Function');
     $element.html(block(_.extend({}, this, context)));
     this.setElement($element);
     this.delegateEvents();
     return this;
+  };
+
+  /**
+   * Format a DOM element ID based on a template name.
+   *
+   * @private
+   * @param {String} template The template name where <code>'/'</code> acts as a delimiter.
+   * @return {String}
+   */
+  View.prototype._DOMQuery = function(template) {
+    return ('#__template-' + template.replace(/[\/_]/g, '-'));
   };
 
   /**

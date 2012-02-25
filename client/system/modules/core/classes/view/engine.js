@@ -40,5 +40,17 @@ function(I18n, NotImplementedError) {
    */
   Engine.extend = Backbone.View.extend;
 
+  /**
+   * Create and return a singleton instance of an <code>Engine</code>.
+   *
+   * <p>In order to be able to register partials, helpers, etc. which persist across different views,
+   * we need a singleton instance of each <code>View</code> engine.</p>
+   *
+   * @return {Route}
+   */
+  Engine.instance = function() {
+    return (this.__instance || (this.__instance = new this()));
+  };
+
   return Engine;
 });

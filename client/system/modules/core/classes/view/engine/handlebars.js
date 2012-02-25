@@ -14,6 +14,9 @@ function(View_Engine) {
         __cache[template] = Handlebars.compile(contents);
       }
       return __cache[template];
+    },
+    partial: function() {
+      return Handlebars.registerPartial.apply(Handlebars, arguments);
     }
   });
 });
