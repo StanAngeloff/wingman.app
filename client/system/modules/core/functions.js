@@ -48,9 +48,13 @@ var define = (function() {
       };
       return evaluate();
     };
-    __modules[module] = function() {
-      return evaluate.apply(evaluate, arguments);
-    };
-    return __modules[module];
+    if (module === null) {
+      return evaluate;
+    } else {
+      __modules[module] = function() {
+        return evaluate.apply(evaluate, arguments);
+      };
+      return __modules[module];
+    }
   };
 })();
