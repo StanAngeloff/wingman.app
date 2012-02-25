@@ -1,6 +1,6 @@
 define('View/Default', function(View) {
   return View.extend({
-    _partials: ['header', 'footer'],
+    _partials: ['epilogue', 'prologue'],
     initialize: function() {
       var engine = this.engine().instance();
       _.each(this._partials, function(name) {
