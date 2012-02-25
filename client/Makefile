@@ -2,6 +2,7 @@ PLATFORM := linux
 
 CERTS_PATH  := system/config/certs/
 VENDOR_PATH := system/cache/core/
+MODULES_PATH := system/modules/
 
 JQUERY_VERSION  := 1.7.1
 JQUERY_DOWNLOAD := http://code.jquery.com/jquery-$(JQUERY_VERSION).js
@@ -20,8 +21,8 @@ HANDLEBARS_VERSION  := 1.0.0.beta.6
 HANDLEBARS_DOWNLOAD := http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-$(HANDLEBARS_VERSION).js
 HANDLEBARS_PATH     := $(VENDOR_PATH)handlebars/
 
-BUNDLE_SCRIPTS := $(VENDOR_PATH)scripts.bundle.js
-BUNDLE_STYLES  := $(VENDOR_PATH)styles.bundle.css
+BUNDLE_SCRIPTS := $(MODULES_PATH)core/bundles/scripts-development.js
+BUNDLE_STYLES  := $(MODULES_PATH)core/bundles/styles-development.css
 
 MONGOOSE_VERSION      := 3.0
 MONGOOSE_DOWNLOAD     := http://mongoose.googlecode.com/files/mongoose-$(MONGOOSE_VERSION).tgz
