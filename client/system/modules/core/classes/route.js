@@ -63,7 +63,7 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
   /**
    * Create and return a singleton instance of a <code>Route</code>.
    *
-   * <p>There should be one and only once instance per application.</code>
+   * <p>There should be one and only once instance per application.</p>
    *
    * @return {Route}
    */
