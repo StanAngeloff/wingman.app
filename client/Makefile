@@ -1,7 +1,7 @@
 PLATFORM := linux
 
 CERTS_PATH  := system/config/certs/
-VENDOR_PATH := system/cache/core/
+VENDOR_PATH := system/cache/vendor/
 MODULES_PATH := system/modules/
 
 JQUERY_VERSION  := 1.7.1
@@ -21,6 +21,10 @@ HANDLEBARS_VERSION  := 1.0.0.beta.6
 HANDLEBARS_DOWNLOAD := http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-$(HANDLEBARS_VERSION).js
 HANDLEBARS_PATH     := $(VENDOR_PATH)handlebars/
 
+LESS_VERSION  := 1.2.2
+LESS_DOWNLOAD := https://raw.github.com/cloudhead/less.js/master/dist/less-$(LESS_VERSION).js
+LESS_PATH     := $(VENDOR_PATH)less/
+
 BUNDLE_SCRIPTS := $(MODULES_PATH)core/bundles/scripts-development.js
 BUNDLE_STYLES  := $(MODULES_PATH)core/bundles/styles-development.css
 
@@ -30,7 +34,7 @@ MONGOOSE_PATH         := $(VENDOR_PATH)mongoose/
 MONGOOSE_OPTIONS      := -D'CONFIG_FILE=\"../../../config/mongoose.config\"'
 MONGOOSE_CERT_SUBJECT := /C=GB/ST=Oxfordshire/L=Oxford/O=Fake Company Ltd./OU=IT/CN=localhost
 
-.PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone install-handlebars bundle-dependencies bundle-component bundle-scripts bundle-styles issue-local-certificate compile-local-server start-local-server
+.PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone install-handlebars install-less bundle-dependencies bundle-component bundle-scripts bundle-styles issue-local-certificate compile-local-server start-local-server
 
 default:
 	@echo "No default $(MAKE) target configured."
@@ -38,7 +42,7 @@ default:
 
 all: install-dependencies bundle-dependencies compile-local-server
 
-install-dependencies: install-jquery install-bootstrap install-underscore install-backbone install-handlebars
+install-dependencies: install-jquery install-bootstrap install-underscore install-backbone install-handlebars install-less
 
 install-script:
 	@mkdir -p "$($(SCRIPT)_PATH)"
@@ -83,6 +87,9 @@ install-backbone:
 install-handlebars:
 	@$(MAKE) install-script SCRIPT=HANDLEBARS
 
+install-less:
+	@$(MAKE) install-script SCRIPT=LESS
+
 bundle-dependencies: bundle-scripts bundle-styles
 	@echo "Bundles created successfully."
 
@@ -98,7 +105,7 @@ bundle-component:
 bundle-scripts:
 	@$(MAKE) bundle-component \
 		COMPONENT=SCRIPTS \
-		DEPENDENCIES='"$(JQUERY_PATH)$(shell basename $(JQUERY_DOWNLOAD))" "$(BOOTSTRAP_PATH)scripts/bootstrap.js" "$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))" "$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))" "$(HANDLEBARS_PATH)$(shell basename $(HANDLEBARS_DOWNLOAD))"'
+		DEPENDENCIES='"$(JQUERY_PATH)$(shell basename $(JQUERY_DOWNLOAD))" "$(BOOTSTRAP_PATH)scripts/bootstrap.js" "$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))" "$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))" "$(HANDLEBARS_PATH)$(shell basename $(HANDLEBARS_DOWNLOAD))" "$(LESS_PATH)$(shell basename $(LESS_DOWNLOAD))"'
 
 bundle-styles:
 	@$(MAKE) bundle-component \

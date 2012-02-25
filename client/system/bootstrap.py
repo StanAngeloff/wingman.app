@@ -17,13 +17,13 @@ available_modules.append(os.path.join(project_path, 'application'))
 for module_path in available_modules:
   # Define the order of files to be included in.
   for dirname, pattern in [
+      ('functions.js', None),
       ('bundles', '*.css'),
       ('bundles', '*.js'),
-      ('functions.js', None),
       ('classes', '*.js'),
       ('i18n', '*.js'),
       ('templates', '*.hbs'),
-      ('assets', '*.css'),
+      ('assets', '*.less'),
       ('bootstrap.js', None)
     ]:
     try_path = os.path.join(module_path, dirname)
@@ -44,6 +44,8 @@ for module_path in available_modules:
     for file_abspath, file_relpath in files:
       if file_abspath.endswith('.css'):
         print "<link rel=stylesheet href=%s>" % (os.path.relpath(file_abspath, project_path))
+      if file_abspath.endswith('.less'):
+        print "<style rel=stylesheet type=text/x-less>%s</style>" % (open(file_abspath).read())
       elif file_abspath.endswith('.js'):
         print "<script src=%s></script>" % (os.path.relpath(file_abspath, project_path))
       elif file_abspath.endswith('.hbs'):

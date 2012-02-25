@@ -58,3 +58,5 @@ var define = (function() {
     }
   };
 })();
+
+define.amd = define;
