@@ -5,7 +5,30 @@
  */
 
 define('I18n', function() {
+  var __cache = {};
   return {
+    /** @private */
+    _language: 'en-US',
+    /** @private */
+    _cached: false,
+    /**
+     * Get or set the language to translate all messages to.
+     *
+     * <p>When a new language code is set, a module at <code>I18n/{code}</code>
+     * is expected to be already defined. This modules must return a hash of
+     * <code>{ key: value }</code> pairs where each <code>key</code> would correspond to
+     * a message used in the application.</p>
+     *
+     * @param {String} code When present, acts as a setter.
+     * @return {String}
+     */
+    language: function(code) {
+      if (typeof (code) !== 'undefined') {
+        this._language = code;
+        this._cached = false;
+      }
+      return this._language;
+    },
     /**
      * Translate a message from English to another language.
      *
@@ -15,7 +38,17 @@ define('I18n', function() {
      * @return {String} The message translated in the configured language.
      */
     translate: function(message) {
-      return message;
+      if ( ! this._cached) {
+        try {
+          __cache[this._language] = (define(['I18n/' + this._language], function(messages) {
+            return messages;
+          }))();
+        } catch (e) {
+          __cache[this._language] = {};
+        }
+        this._cached = true;
+      }
+      return ((message in __cache[this._language]) ? __cache[this._language][message] : message);
     },
     /**
      * Translate and format a message from English to another language.

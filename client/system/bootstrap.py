@@ -21,6 +21,7 @@ for module_path in available_modules:
       ('bundles', '*.js'),
       ('functions.js', None),
       ('classes', '*.js'),
+      ('i18n', '*.js'),
       ('templates', '*.hbs'),
       ('bootstrap.js', None)
     ]:
