@@ -23,6 +23,7 @@ for module_path in available_modules:
       ('classes', '*.js'),
       ('i18n', '*.js'),
       ('templates', '*.hbs'),
+      ('assets', '*.css'),
       ('bootstrap.js', None)
     ]:
     try_path = os.path.join(module_path, dirname)
