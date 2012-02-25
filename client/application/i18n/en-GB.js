@@ -1,3 +1,6 @@
 define('I18n/en-GB', function() {
-  return { };
+  return {
+    'login.header': 'Hello!',
+    'login.body': 'World!'
+  };
 });

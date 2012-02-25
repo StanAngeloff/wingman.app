@@ -1,11 +1,7 @@
-define('View/Default', function(View) {
+define('View/Default', function(I18n, View) {
   return View.extend({
-    _partials: ['epilogue', 'prologue'],
-    initialize: function() {
-      var engine = this.engine().instance();
-      _.each(this._partials, function(name) {
-        engine.partial(name, new View('partials/' + name).templateContents());
-      });
+    translate: function() {
+      return I18n.translate.apply(I18n, arguments);
     }
   });
 });
