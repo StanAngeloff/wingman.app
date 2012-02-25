@@ -140,10 +140,10 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError, View) {
    * @return {Route} A reference to self (useful for chaining methods).
    * @throws {module:Error~RuntimeError} If no routes have been registered.
    */
-  Route.find = function(options) {
+  Route.start = function(options) {
     if (typeof (Backbone.history) === 'undefined') {
       throw new RuntimeError(I18n.format("':method' called without any routes set up. See ':relative'.", {
-        ':method': 'Route.find',
+        ':method': 'Route.start',
         ':relative': 'Route.match'
       }), 1329505536);
     }
