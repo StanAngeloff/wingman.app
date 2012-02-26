@@ -1,4 +1,4 @@
-define('View/Login/Index', function(View_Default) {
+define('View/Login/Index', function(Route, View_Default) {
   return View_Default.extend({
     template: 'login/index',
     events: {
@@ -7,7 +7,7 @@ define('View/Login/Index', function(View_Default) {
     },
     getSignUp: function(event) {
       event.preventDefault();
-      this.get('SignUp#index');
+      Route.get('SignUp#index');
     },
     postLogin: function(event) {
       event.preventDefault();

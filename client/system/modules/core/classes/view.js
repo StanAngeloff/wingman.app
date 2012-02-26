@@ -2,13 +2,12 @@ define('View',
 /**
  * @requires module:Guard
  * @requires module:I18n
- * @requires module:Route~Route
  * @requires module:View/Engine~Engine
  * @requires module:View/Engine/Default
  * @requires module:Error~ResourceError
  * @exports View
  */
-function(Guard, I18n, Route, View_Engine, View_Engine_Default, ResourceError) {
+function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
   var __engine = View_Engine_Default;
 
   /**
@@ -91,13 +90,6 @@ function(Guard, I18n, Route, View_Engine, View_Engine_Default, ResourceError) {
     this.setElement($element);
     this.delegateEvents();
     return this;
-  };
-
-  /**
-   * @see module:Route~Route.get
-   */
-  View.prototype.get = function() {
-    return Route.get.apply(Route, arguments);
   };
 
   /**
