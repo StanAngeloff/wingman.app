@@ -29,15 +29,15 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
         action: true,
         name: true
       });
-      var invoke = function(instance) {
-        if ( ! (options.action in instance)) {
+      var invoke = function(controller) {
+        if ( ! (options.action in controller)) {
           throw new ResourceError(I18n.format("Route ':route' (:name) failed as the requested controller does not have a method for action ':action' defined.", {
             ':route': options.route,
             ':name': options.name,
             ':action': options.action
           }), 1329669800);
         }
-        instance[options.action].apply(instance, args);
+        controller[options.action].apply(controller, args);
       };
       this._instance(options.controller, options.name, invoke);
     },
