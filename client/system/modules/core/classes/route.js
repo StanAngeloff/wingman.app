@@ -4,10 +4,11 @@ define('Route',
  * @requires module:Guard
  * @requires module:I18n
  * @requires module:Error~RuntimeError
+ * @requires module:QueryString
  * @exports Route
  */
-function(Controller, Guard, I18n, RandExp, ResourceError, RuntimeError) {
-  var __routes = {};
+function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeError) {
+  var __request, __routes = {};
   /**
    * Create a new instance of a router.
    *
@@ -24,6 +25,8 @@ function(Controller, Guard, I18n, RandExp, ResourceError, RuntimeError) {
       return (this._uuid ++);
     },
     process: function(options, args) {
+      var copy = __request;
+      __request = null;
       Guard.expectHash('Route.process', 'options', options, {
         route: true,
         controller: true,
@@ -38,6 +41,7 @@ function(Controller, Guard, I18n, RandExp, ResourceError, RuntimeError) {
             ':action': options.action
           }), 1329669800);
         }
+        controller.request(_.extend({}, copy, options));
         controller[options.action].apply(controller, args);
       };
       this._instance(options.controller, options.name, invoke);
@@ -157,24 +161,48 @@ function(Controller, Guard, I18n, RandExp, ResourceError, RuntimeError) {
    * @throws {module:Error~ResourceError} If no route has been registered.
    */
   Route.get = function(options) {
+    __request = null;
     options = this._extract(options);
     Guard.expectHash('Route.get', 'options', options, {
       controller: true,
       action: true
     });
+    options.method || (options.method = 'GET');
     this._guardHistory('Route.get');
     var key = (options.controller + '#' + options.action);
     if ( ! (key in __routes)) {
-      throw new ResourceError(I18n.format("GET ':key' failed as there is no controller with that action registered.", {
-        ':key': key,
+      throw new ResourceError(I18n.format(":method ':key' failed as there is no controller with that action registered.", {
+        ':method': options.method,
+        ':key': key
       }), 1330255988);
     }
     var route = __routes[key],
         generator = new RandExp(route);
     generator.max = 0;
+    __request = options;
     Route.instance().navigate(generator.gen(), _.extend({
       trigger: true
     }, options));
+  };
+
+  /**
+   * Post data to the URL registered for the given controller and action.
+   *
+   * @param {Object} options A hash of options for the navigation. <code>{ controller, action }</code> must be specified.
+   * @param {String|Object|Array} query A query string formatted list of fields to post.
+   * @see Route.get
+   */
+  Route.post = function(options, query) {
+    options = this._extract(options);
+    if (_.isArray(query) || _.isObject(query)) {
+      query = $.param(query);
+    }
+    Guard.expectType('Route.post', 'query', query, 'String');
+    var params = QueryString.parse(query);
+    return this.get.apply(this, [_.extend({}, options, {
+      method: 'POST',
+      params: params
+    })]);
   };
 
   /**
