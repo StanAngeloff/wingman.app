@@ -6,7 +6,8 @@ define('Route',
  * @requires module:Error~RuntimeError
  * @exports Route
  */
-function(Controller, Guard, I18n, ResourceError, RuntimeError) {
+function(Controller, Guard, I18n, RandExp, ResourceError, RuntimeError) {
+  var __routes = {};
   /**
    * Create a new instance of a router.
    *
@@ -40,6 +41,9 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
         controller[options.action].apply(controller, args);
       };
       this._instance(options.controller, options.name, invoke);
+    },
+    routeToRegExp: function() {
+      return this._routeToRegExp.apply(this, arguments);
     },
     _instance: function(controller, name, block) {
       if (name in this._controllers) {
@@ -90,15 +94,7 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
    * @return {Route} A reference to self (useful for chaining methods).
    */
   Route.match = function(routes, options) {
-    if (typeof (options) === 'string' && ~options.indexOf('#')) {
-      options = options.split('#');
-    }
-    if (_.isArray(options) || options.length === 2) {
-      options = {
-        controller: options[0],
-        action: options[1]
-      };
-    }
+    options = this._extract(options);
     Guard.expectHash('Route.match', 'options', options, {
       controller: true,
       action: true
@@ -113,6 +109,9 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
     if ( ! _.isArray(routes)) {
       routes = [routes];
     }
+    routes = _.map(routes, function(route) {
+      return (_.isRegExp(route) ? route : instance.routeToRegExp(route));
+    });
     if (routes.length === 1 && routes[0] === '/') {
       routes.push('');
     }
@@ -123,6 +122,7 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
         }), Array.prototype.slice.call(arguments));
       });
     });
+    __routes[options.controller + '#' + options.action] = routes[0];
     return this;
   };
 
@@ -138,14 +138,71 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError) {
    * @throws {module:Error~RuntimeError} If no routes have been registered.
    */
   Route.start = function(options) {
+    this._guardHistory('Route.start');
+    Backbone.history.start(options);
+    return this;
+  };
+
+  /**
+   * Navigate to the URL registered for the given controller and action.
+   *
+   * <dl>
+   *   <dt><code>options</code></dt>
+   *   <dd><code>controller</code> The controller name.</dd>
+   *   <dd><code>action</code> The controller action.</dd>
+   * </dl>
+   *
+   * @param {Object} options A hash of options for the navigation. <code>{ controller, action }</code> must be specified.
+   * @see <a href="http://documentcloud.github.com/backbone/#Route-navigate">Route (Backbone.js)</a>
+   * @throws {module:Error~ResourceError} If no route has been registered.
+   */
+  Route.get = function(options) {
+    options = this._extract(options);
+    Guard.expectHash('Route.get', 'options', options, {
+      controller: true,
+      action: true
+    });
+    this._guardHistory('Route.get');
+    var key = (options.controller + '#' + options.action);
+    if ( ! (key in __routes)) {
+      throw new ResourceError(I18n.format("GET ':key' failed as there is no controller with that action registered.", {
+        ':key': key,
+      }), 1330255988);
+    }
+    var route = __routes[key],
+        generator = new RandExp(route);
+    generator.max = 0;
+    Route.instance().navigate(generator.gen(), _.extend({
+      trigger: true
+    }, options));
+  };
+
+  /**
+   * @private
+   */
+  Route._extract = function(options) {
+    if (typeof (options) === 'string' && ~options.indexOf('#')) {
+      options = options.split('#');
+    }
+    if (_.isArray(options) || options.length === 2) {
+      options = {
+        controller: options[0],
+        action: options[1]
+      };
+    }
+    return options;
+  };
+
+  /**
+   * @private
+   */
+  Route._guardHistory = function(method) {
     if (typeof (Backbone.history) === 'undefined') {
       throw new RuntimeError(I18n.format("':method' called without any routes set up. See ':relative'.", {
-        ':method': 'Route.start',
+        ':method': method,
         ':relative': 'Route.match'
       }), 1329505536);
     }
-    Backbone.history.start(options);
-    return this;
   };
 
   return Route;
