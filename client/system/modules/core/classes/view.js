@@ -19,7 +19,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
     /** @private */
     this._engine || (this._engine = __engine);
     /** @private */
-    this._template || (this._template = template);
+    this.template || (this.template = template);
     /** @private */
     this._target || (this._target = '__page');
     this.initialize.apply(this, arguments);
@@ -47,7 +47,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
    * @throws {module:Error~ResourceError} If no template DOM element was found.
    */
   View.prototype.templateContents = function(template) {
-    template || (template = this._template);
+    template || (template = this.template);
     var query = this._DOMQuery(template),
         $element = $(query);
     if ( ! $element.length) {
@@ -82,7 +82,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
       context = template;
       template = null;
     }
-    template || (template = this._template);
+    template || (template = this.template);
     var contents = this.templateContents(template),
         block = this._engine.instance().compile(template, contents);
     Guard.expectType('View.render', 'block', block, 'Function');
