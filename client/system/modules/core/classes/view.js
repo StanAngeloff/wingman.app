@@ -67,6 +67,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
    * @param {Object} context Optional hash of <code>{ key: values }</code> pairs which will be available in the template only.
    * @return {View} A reference to self (useful for chaining methods).
    * @throws {module:Error~ResourceError} If no target DOM element was found.
+   * @see View.prototype.toString
    * @see <a href="http://documentcloud.github.com/backbone/#View-render">View (Backbone.js)</a>
    */
   View.prototype.display = function(template, context) {
@@ -78,6 +79,20 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
         ':query': query
       }), 1330103038);
     }
+    $element.html(this.toString.apply(this, arguments));
+    this.setElement($element);
+    this.delegateEvents();
+    return this;
+  };
+
+  /**
+   * Render the view and return as <code>String</code>.
+   *
+   * @param {String} template Optional template name.
+   * @param {Object} context Optional hash of <code>{ key: values }</code> pairs which will be available in the template only.
+   * @return {String}
+   */
+  View.prototype.toString = function(template, context) {
     if (_.isObject(template)) {
       context = template;
       template = null;
@@ -86,10 +101,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
     var contents = this.templateContents(template),
         block = this._engine.instance().compile(template, contents);
     Guard.expectType('View.display', 'block', block, 'Function');
-    $element.html(block(_.extend({}, this, context)));
-    this.setElement($element);
-    this.delegateEvents();
-    return this;
+    return block(_.extend({}, this, context));
   };
 
   /**
