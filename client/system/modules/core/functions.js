@@ -59,4 +59,5 @@ var define = (function() {
   };
 })();
 
-define.amd = define;
+// Use {} as RandExp checks the type of define.amd and expects 'object'.
+define.amd = {};
