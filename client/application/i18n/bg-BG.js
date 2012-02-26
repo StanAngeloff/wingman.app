@@ -14,6 +14,8 @@ define('I18n/bg-BG', function() {
     "Method ':method' in class ':class' is marked as abstract and must be implemented in derived classes.": "Метод ':method' в клас ':class' е маркиран като абстрактен и трябва да бъде имплементиран в нови класове.",
     "Route ':route' (:name) failed as the requested controller does not have a method for action ':action' defined.": "Път ':route' (:name) не беше успешен понеже избрания контролер не дефинира метод за действие ':action'.",
     ":method ':key' failed as there is no controller with that action registered.": ":method ':key' не беше успешен понеже няма регистриран контролер с това действие.",
-    "':method' called without any routes set up. See ':relative'.": "':method' беше извикан преди да бъдат дефинирани пътища. Виж ':relative'."
+    "':method' called without any routes set up. See ':relative'.": "':method' беше извикан преди да бъдат дефинирани пътища. Виж ':relative'.",
+    "Form ':group' already has a control ':name'.": "Форма ':group' вече съдържа контрола с име ':name'.",
+    "':method' does not support format ':format'.": "':method' не поддържа формат ':format'."
   };
 });
