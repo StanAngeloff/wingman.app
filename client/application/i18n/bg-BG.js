@@ -2,8 +2,8 @@ define('I18n/bg-BG', function() {
   return {
     'login.header': 'Добре дошли в Wingman.app',
     'login.instructions': 'Моля идентифицирайте се по-долу преди да продължите.',
-    'login.box.email': 'И-мейл Адрес',
-    'login.box.password': 'Парола',
+    'form.login[email]': 'И-мейл Адрес',
+    'form.login[password]': 'Парола',
     'login.signup': 'Нов Потребител',
     'login.continue': 'Вход',
 

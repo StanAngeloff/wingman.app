@@ -6,24 +6,8 @@
       </header>
       <div class=modal-body>
         <p>{{translate "login.instructions"}}</p>
-        <div class=control-group>
-          <label class=control-label for=email>{{translate "login.box.email"}}:</label>
-          <div class=controls>
-            <div class=input-prepend>
-              <span class=add-on><span class=icon-user></span></span>
-              <input type=email id=email name=email size=20 required autofocus>
-            </div>
-          </div>
-        </div>
-        <div class=control-group>
-          <label class=control-label for=password>{{translate "login.box.password"}}:</label>
-          <div class=controls>
-            <div class=input-prepend>
-              <span class=add-on><span class=icon-lock></span></span>
-              <input type=password id=password name=password size=10 required>
-            </div>
-          </div>
-        </div>
+        {{{control form.email}}}
+        {{{control form.password}}}
       </div>
       <footer class=modal-footer>
         <div class=row-fluid>
