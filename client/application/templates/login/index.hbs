@@ -1,13 +1,33 @@
 <article id=login>
-  <div class=modal>
-    <div class=modal-header>
-      <h3>{{translate "login.header"}}</h3>
+  <form id=details class=form-horizontal>
+    <div class=modal>
+      <header class=modal-header>
+        <h1>{{translate "login.header"}}</h1>
+      </header>
+      <div class=modal-body>
+        <p>{{translate "login.instructions"}}</p>
+        <div class=control-group>
+          <label class=control-label for=email>E-mail:</label>
+          <div class=controls>
+            <div class=input-prepend>
+              <span class=add-on><span class=icon-user></span></span>
+              <input type=email id=email name=email size=20 required autofocus>
+            </div>
+          </div>
+        </div>
+        <div class=control-group>
+          <label class=control-label for=password>Password:</label>
+          <div class=controls>
+            <div class=input-prepend>
+              <span class=add-on><span class=icon-lock></span></span>
+              <input type=password id=password name=password size=10 required>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class=modal-footer>
+        <button id=continue type=submit class="btn btn-primary">{{translate "login.continue"}}&nbsp;&nbsp;<span class="icon-chevron-right icon-white"></span></button>
+      </footer>
     </div>
-    <div class="modal-body">
-      <p>{{translate "login.instructions"}}</p>
-    </div>
-    <div class="modal-footer">
-      <button id=continue class="btn btn-primary">{{translate "login.continue"}}</button>
-    </div>
-  </div>
+  </form>
 </article>

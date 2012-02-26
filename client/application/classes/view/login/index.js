@@ -2,10 +2,11 @@ define('View/Login/Index', function(View_Default) {
   return View_Default.extend({
     template: 'login/index',
     events: {
-      'click #continue': 'sendLogin'
+      'click #continue': 'postLogin'
     },
-    sendLogin: function(event) {
+    postLogin: function(event) {
       event.preventDefault();
+      console.error('XXX: Not implemented.');
     }
   });
 });
