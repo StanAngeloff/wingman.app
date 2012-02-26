@@ -1,7 +1,7 @@
 define('Controller/Login', function(Controller, Route) {
   return Controller.extend({
     index: define(function(View_Login_Index) {
-      new View_Login_Index().render();
+      new View_Login_Index().display();
     }),
     process: function() {
       var params = this.request().params;

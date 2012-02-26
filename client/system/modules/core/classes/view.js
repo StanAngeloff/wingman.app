@@ -61,7 +61,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
   };
 
   /**
-   * Render the view in the DOM.
+   * Display the view in the DOM.
    *
    * @param {String} template Optional template name.
    * @param {Object} context Optional hash of <code>{ key: values }</code> pairs which will be available in the template only.
@@ -69,12 +69,12 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
    * @throws {module:Error~ResourceError} If no target DOM element was found.
    * @see <a href="http://documentcloud.github.com/backbone/#View-render">View (Backbone.js)</a>
    */
-  View.prototype.render = function(template, context) {
+  View.prototype.display = function(template, context) {
     var query = ('#' + this._target),
         $element = $(query);
     if ( ! $element.length) {
       throw new ResourceError(I18n.format("':method' could not find element to update, DOM query was ':query'.", {
-        ':method': 'View.render',
+        ':method': 'View.display',
         ':query': query
       }), 1330103038);
     }
@@ -85,7 +85,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
     template || (template = this.template);
     var contents = this.templateContents(template),
         block = this._engine.instance().compile(template, contents);
-    Guard.expectType('View.render', 'block', block, 'Function');
+    Guard.expectType('View.display', 'block', block, 'Function');
     $element.html(block(_.extend({}, this, context)));
     this.setElement($element);
     this.delegateEvents();
