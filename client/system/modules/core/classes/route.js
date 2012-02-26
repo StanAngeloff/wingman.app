@@ -6,7 +6,7 @@ define('Route',
  * @requires module:Error~RuntimeError
  * @exports Route
  */
-function(Controller, Guard, I18n, ResourceError, RuntimeError, View) {
+function(Controller, Guard, I18n, ResourceError, RuntimeError) {
   /**
    * Create a new instance of a router.
    *
@@ -37,10 +37,7 @@ function(Controller, Guard, I18n, ResourceError, RuntimeError, View) {
             ':action': options.action
           }), 1329669800);
         }
-        var result = instance[options.action].apply(instance, args);
-        if (result instanceof View) {
-          result.render();
-        }
+        instance[options.action].apply(instance, args);
       };
       this._instance(options.controller, options.name, invoke);
     },
