@@ -3,7 +3,7 @@ define('View/Login/Index', function(Route, View_Default) {
     template: 'login/index',
     events: {
       'click #signup': 'getSignUp',
-      'click #continue': 'postLogin'
+      'submit form': 'postLogin'
     },
     getSignUp: function(event) {
       event.preventDefault();
