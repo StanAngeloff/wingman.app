@@ -2,7 +2,7 @@ define('View/Login/Index', function(Route, View_Default) {
   return View_Default.extend({
     template: 'login/index',
     events: {
-      'click #signup': 'getSignUp',
+      'click .signup': 'getSignUp',
       'submit form': 'postLogin'
     },
     getSignUp: function(event) {
