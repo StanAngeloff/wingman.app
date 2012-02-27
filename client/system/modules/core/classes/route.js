@@ -193,6 +193,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
    * @see Route.get
    */
   Route.post = function(options, query) {
+    __request = null;
     options = this._extract(options);
     if (_.isArray(query) || _.isObject(query)) {
       query = $.param(query);
