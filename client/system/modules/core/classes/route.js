@@ -207,6 +207,24 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
   };
 
   /**
+   * Load the previous URL from the navigation history.
+   *
+   * @param {Object} options A hash of options for the navigation. There can be used to pass optional <code>params</code>.
+   * @see <a href="https://developer.mozilla.org/en/DOM/window.history">window.history (MDN)</a>
+   * @throws {module:Error~ResourceError} If no previous URLs are available in the history.
+   */
+  Route.previous = function(options) {
+    __request = null;
+    if (history.length <= 1) {
+      throw new ResourceError(I18n.format(":method failed as there is no history to navigate.", {
+        ':method': 'PREVIOUS'
+      }), 1330364780);
+    }
+    __request = (options || {});
+    history.go(-1);
+  };
+
+  /**
    * @private
    */
   Route._extract = function(options) {

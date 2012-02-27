@@ -1,4 +1,4 @@
-define('View/SignUp/Index', function(View_Default) {
+define('View/SignUp/Index', function(Route, View_Default) {
   return View_Default.extend({
     template: 'signup/index',
     events: {
@@ -6,7 +6,7 @@ define('View/SignUp/Index', function(View_Default) {
       'submit form': 'postSignUp'
     },
     getPrevious: function() {
-      history.back();
+      Route.previous();
     },
     postSignUp: function() {
       event.preventDefault();
