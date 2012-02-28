@@ -22,7 +22,7 @@ define('Controller/Login', function(Controller, Form, Route) {
     process: function() {
       var params = this.request().params;
       if ( ! params) {
-        return Route.previous();
+        return Route.get('Login#index', { navigate: false });
       }
       console.error('XXX: Not implement.');
       console.log(params);

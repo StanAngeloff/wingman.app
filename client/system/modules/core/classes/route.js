@@ -176,13 +176,19 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
         ':key': key
       }), 1330255988);
     }
-    var route = __routes[key],
-        generator = new RandExp(route);
-    generator.max = 0;
     __request = options;
-    Route.instance().navigate(generator.gen(), _.extend({
-      trigger: true
-    }, options));
+    var route = __routes[key],
+        generator = new RandExp(route), fragment;
+    generator.max = 0;
+    fragment = generator.gen();
+    // 'navigate' is optional so our case should be 'not navigate' to match when it was explicitly specified.
+    if ( ! options.navigate) {
+      Backbone.history.loadUrl(fragment);
+    } else {
+      Route.instance().navigate(fragment, _.extend({
+        trigger: true
+      }, options));
+    }
   };
 
   /**
