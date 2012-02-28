@@ -12,6 +12,7 @@ function(I18n, NotImplementedError) {
    */
   function Engine() {
     this.initialize.apply(this, arguments);
+    return this;
   };
 
   /**

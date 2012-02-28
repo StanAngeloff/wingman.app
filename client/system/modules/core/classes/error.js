@@ -26,6 +26,7 @@ function() {
         stack: message.stack
       });
     }
+    return this;
   };
 
   RuntimeError.prototype = new Error;
@@ -49,6 +50,7 @@ function(RuntimeError) {
   function ArgumentError() {
     RuntimeError.apply(this, arguments);
     this.name = 'ArgumentError';
+    return this;
   };
 
   ArgumentError.prototype = new RuntimeError();
@@ -72,6 +74,7 @@ function(RuntimeError) {
   function TypeError() {
     RuntimeError.apply(this, arguments);
     this.name = 'TypeError';
+    return this;
   };
 
   TypeError.prototype = new RuntimeError();
@@ -95,6 +98,7 @@ function(RuntimeError) {
   function ResourceError() {
     RuntimeError.apply(this, arguments);
     this.name = 'ResourceError';
+    return this;
   };
 
   ResourceError.prototype = new RuntimeError();
@@ -118,6 +122,7 @@ function(RuntimeError) {
   function NotImplementedError() {
     RuntimeError.apply(this, arguments);
     this.name = 'NotImplementedError';
+    return this;
   };
 
   NotImplementedError.prototype = new RuntimeError();

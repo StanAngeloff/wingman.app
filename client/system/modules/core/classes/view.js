@@ -23,6 +23,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
     /** @private */
     this._target || (this._target = '__page');
     this.initialize.apply(this, arguments);
+    return this;
   };
 
   View.prototype = new Backbone.View();

@@ -18,6 +18,7 @@ function(I18n, Util, RuntimeError) {
     }, attributes, {
       name: name
     });
+    return this;
   };
 
   /**

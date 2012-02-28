@@ -187,9 +187,9 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
     fragment = generator.gen();
     // 'navigate' is optional so our case should be 'not navigate' to match when it was explicitly specified.
     if (options.navigate === false) {
-      Backbone.history.loadUrl(fragment);
+      return Backbone.history.loadUrl(fragment);
     } else {
-      Route.instance().navigate(fragment, _.extend({
+      return Route.instance().navigate(fragment, _.extend({
         trigger: true
       }, options));
     }
@@ -237,6 +237,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
     }
     __request = (options || {});
     history.go(-1);
+    return this;
   };
 
   /**

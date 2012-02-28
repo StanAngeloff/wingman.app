@@ -12,6 +12,7 @@ function() {
     /** @private */
     this._request = null;
     this.initialize.apply(this, arguments);
+    return this;
   };
 
   /**

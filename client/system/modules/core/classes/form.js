@@ -16,6 +16,7 @@ function(Form_Control, I18n, ArgumentError) {
     this._group = group;
     /** @private */
     this._controls = {};
+    return this;
   };
 
   /**
