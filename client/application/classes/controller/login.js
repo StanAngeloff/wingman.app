@@ -1,5 +1,5 @@
 define('Controller/Login', function(Controller, Form, Route) {
-  function loginForm() {
+  function createForm() {
     return new Form('login')
       .control('email', {
         type: 'email',
@@ -16,7 +16,7 @@ define('Controller/Login', function(Controller, Form, Route) {
   return Controller.extend({
     index: define(function(View_Login_Index) {
       new View_Login_Index().display({
-        form: loginForm()
+        form: createForm()
       });
     }),
     process: function() {
