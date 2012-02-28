@@ -182,7 +182,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
     generator.max = 0;
     fragment = generator.gen();
     // 'navigate' is optional so our case should be 'not navigate' to match when it was explicitly specified.
-    if ( ! options.navigate) {
+    if (options.navigate === false) {
       Backbone.history.loadUrl(fragment);
     } else {
       Route.instance().navigate(fragment, _.extend({
