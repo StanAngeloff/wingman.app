@@ -156,13 +156,17 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
    *   <dd><code>action</code> The controller action.</dd>
    * </dl>
    *
-   * @param {Object} options A hash of options for the navigation. <code>{ controller, action }</code> must be specified.
+   * @param {Object} ...options A hash of options for the navigation. <code>{ controller, action }</code> must be specified.
    * @see <a href="http://documentcloud.github.com/backbone/#Route-navigate">Route (Backbone.js)</a>
    * @throws {module:Error~ResourceError} If no route has been registered.
    */
-  Route.get = function(options) {
+  Route.get = function() {
     __request = null;
-    options = this._extract(options);
+    var self = this,
+        options = {};
+    _.each(arguments, function(arg) {
+      options = _.extend(options, self._extract(arg));
+    });
     Guard.expectHash('Route.get', 'options', options, {
       controller: true,
       action: true
@@ -194,21 +198,26 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
   /**
    * Post data to the URL registered for the given controller and action.
    *
-   * @param {Object} options A hash of options for the navigation. <code>{ controller, action }</code> must be specified.
+   * @param {Object} ...options A hash of options for the navigation. <code>{ controller, action }</code> must be specified.
    * @param {String|Object|Array} query A query string formatted list of fields to post.
    * @see Route.get
    */
-  Route.post = function(options, query) {
+  Route.post = function() {
     __request = null;
-    options = this._extract(options);
+    var self = this,
+        options = {}, query,
+        args = Array.prototype.slice.call(arguments);
+    query = args.pop();
     if (_.isArray(query) || _.isObject(query)) {
       query = $.param(query);
     }
     Guard.expectType('Route.post', 'query', query, 'String');
-    var params = QueryString.parse(query);
+    _.each(args, function(arg) {
+      options = _.extend(options, self._extract(arg));
+    });
     return this.get.apply(this, [_.extend({}, options, {
       method: 'POST',
-      params: params
+      params: QueryString.parse(query)
     })]);
   };
 
