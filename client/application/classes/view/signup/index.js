@@ -21,7 +21,7 @@ define('View/SignUp/Index', function(I18n, Route, View_Default) {
     validatePasswords: function() {
       var $passwords = this.$('[type="password"]'),
           allValid, allMatch;
-      _.map($passwords, function(element) {
+      _.each($passwords, function(element) {
         var $element = $(element),
             minLength = parseInt($element.attr('minlegth'), 10);
         element.setCustomValidity('');
