@@ -67,5 +67,27 @@ function(Form_Control, I18n, ArgumentError) {
     return this._controls[name];
   };
 
+  /**
+   * Load the given values into the form controls.
+   *
+   * @param {Object} params A list of <code>{ key: value }</code> pairs where each <code>key</code> is the name of a control within the form.
+   * @param {Object} options Optional configuration. <code>{ exclude }</code> can be set to an <code>Array</code> to filter out certain control types, e.g., <code>password</code>.
+   * @return {Form} A reference to self (useful for chaining methods).
+   */
+  Form.prototype.values = function(params, options) {
+    options = _.extend({
+      exclude: ['password']
+    }, options);
+    var values = (params && (this._group in params) ? params[this._group] : {});
+    _.each(this._controls, function(control, name) {
+      var value = values[name];
+      if (~_.indexOf(options.exclude, control.attribute('type'))) {
+        value = '';
+      }
+      control.attribute('value', value);
+    });
+    return this;
+  };
+
   return Form;
 });
