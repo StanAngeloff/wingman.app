@@ -13,6 +13,9 @@ define('I18n/en-GB', function() {
     'form.signup[password]': 'Password',
     'form.signup[password2]': 'Password (verify)',
     'signup.cancel': 'Cancel',
-    'signup.continue': 'Sign Up'
+    'signup.continue': 'Sign Up',
+
+    'validity.minlength': 'Please enter at least :length characters.',
+    'validity.password.match': 'Please re-type the password as it does not match.'
   };
 });

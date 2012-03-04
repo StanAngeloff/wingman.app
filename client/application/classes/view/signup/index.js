@@ -1,16 +1,49 @@
-define('View/SignUp/Index', function(Route, View_Default) {
+define('View/SignUp/Index', function(I18n, Route, View_Default) {
   return View_Default.extend({
     template: 'signup/index',
     events: {
       'click .cancel': 'getPrevious',
-      'submit form': 'postSignUp'
+      'submit form': 'postSignUp',
+      'input [type="password"]': 'validatePasswords'
     },
     getPrevious: function() {
       Route.previous();
     },
     postSignUp: function() {
       event.preventDefault();
+      this.validatePasswords();
+      var $form = this.$('form');
+      if ( ! $form.get(0).checkValidity()) {
+        return false;
+      }
       console.error('XXX: Not implemented.');
+    },
+    validatePasswords: function() {
+      var $passwords = this.$('[type="password"]'),
+          allValid, allMatch;
+      _.map($passwords, function(element) {
+        var $element = $(element),
+            minLength = parseInt($element.attr('minlegth'), 10);
+        element.setCustomValidity('');
+        if ( ! isNaN(minLength) && $element.val().length < minLength) {
+          element.setCustomValidity(I18n.format('validity.minlength', {
+            ':length': minLength
+          }));
+        }
+      });
+      allValid = _.reduce($passwords, function(memo, element) {
+        return (memo && element.validity.valid);
+      }, true);
+      if ( ! allValid) {
+        return false;
+      }
+      allMatch = _.reduce($passwords, function(memo, element) {
+        return ($(element).val() === memo ? memo : false);
+      }, $passwords.first().val());
+      if (allMatch) {
+        return true;
+      }
+      $passwords.get($passwords.length - 1).setCustomValidity(I18n.translate('validity.password.match'));
     }
   });
 });

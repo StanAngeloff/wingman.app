@@ -15,6 +15,9 @@ define('I18n/bg-BG', function() {
     'signup.cancel': 'Отказ',
     'signup.continue': 'Регистрирай Се',
 
+    'validity.minlength': 'Моля въведете поне :length символа.',
+    'validity.password.match': 'Моля въведете паролата отново понеже не съвпада.',
+
     "':method' could not find an element for template ':template', DOM query was ':query'.": "':method' не може да открие елемент за темплейт ':template', DOM заявката беше ':query'.",
     "':method' could not find element to update, DOM query was ':query'.": "':method' не можа да открие елемент за промяна, DOM заявката беше ':query'.",
     "':callee' expects ':name' to be of type ':type'.": "':callee' очаква ':name' да бъде от тип ':type'.",
