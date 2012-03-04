@@ -30,7 +30,7 @@ function(I18n, Util, RuntimeError) {
    */
   Control.prototype.attribute = function(name, value) {
     if (typeof (value) !== 'undefined') {
-      this._attributes = _.extend(this._attributes, { name: value });
+      this._attributes[name] = value;
     }
     value = this._attributes[name];
     return (_.isFunction(value) ? value() : value);
