@@ -9,6 +9,9 @@ define('I18n/bg-BG', function() {
 
     'signup.header': 'Регистрирайте се за Wingman.app',
     'signup.instructions': 'Моля попълнете детайлите по-долу и изберете ‘Регистрирай Се’ когато сте готови да създадете Вашия акаунт.',
+    'form.signup[email]': 'И-мейл Адрес',
+    'form.signup[password]': 'Парола',
+    'form.signup[password2]': 'Парола (потвърдете)',
     'signup.cancel': 'Отказ',
     'signup.continue': 'Регистрирай Се',
 

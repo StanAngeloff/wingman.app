@@ -9,6 +9,9 @@ define('I18n/en-GB', function() {
 
     'signup.header': 'Sign Up to Wingman.app',
     'signup.instructions': 'Please fill in the details below and select ‘Sign Up’ when you are ready to complete your account.',
+    'form.signup[email]': 'E-mail',
+    'form.signup[password]': 'Password',
+    'form.signup[password2]': 'Password (verify)',
     'signup.cancel': 'Cancel',
     'signup.continue': 'Sign Up'
   };
