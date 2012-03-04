@@ -1,11 +1,10 @@
 define('Form/Control',
 /**
  * @requires I18n
- * @requires Util
  * @requires module:Error~RuntimeError
  * @exports Form/Control
  */
-function(I18n, Util, RuntimeError) {
+function(I18n, RuntimeError) {
   /**
    * Create a new instance of a <code>Control</code>.
    *
@@ -76,9 +75,9 @@ function(I18n, Util, RuntimeError) {
     var tags = this._typeToHTMLTag(this._attributes.type),
         html = '<' + tags[0];
     _.each(this.attributes(), function(value, key) {
-      html = html + ' ' + Util.escapeHTML(key);
+      html = html + ' ' + _.escape(key);
       if (value !== true) {
-        html = html + '="' + Util.escapeHTML(value) + '"';
+        html = html + '="' + _.escape(value) + '"';
       }
     });
     html = html + '>';
