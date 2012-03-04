@@ -14,18 +14,21 @@ define('Controller/Login', function(Controller, Form, Route) {
       });
   };
   return Controller.extend({
-    index: define(function(View_Login_Index) {
-      new View_Login_Index().display({
-        form: createForm()
-      });
-    }),
-    process: function() {
-      var params = this.request().params;
-      if ( ! params) {
-        return Route.get('Login#index', { navigate: false });
+    index: function() {
+      var form = createForm();
+      if (this.request().method === 'POST') {
+        this._process(this.request().params, form);
       }
+      define(function(View_Login_Index) {
+        new View_Login_Index().display({
+          form: form
+        });
+      })();
+    },
+    _process: function(params, form) {
+      form.values(params);
+      console.error(form);
       console.error('XXX: Not implement.');
-      console.log(params);
     }
   });
 });

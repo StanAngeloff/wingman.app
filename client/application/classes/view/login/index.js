@@ -11,7 +11,7 @@ define('View/Login/Index', function(Route, View_Default) {
     },
     postLogin: function(event) {
       event.preventDefault();
-      Route.post('Login#process', this.$('form').serialize());
+      Route.post('Login#index', this.$('form').serialize());
     }
   });
 });
