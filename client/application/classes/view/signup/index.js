@@ -16,7 +16,7 @@ define('View/SignUp/Index', function(I18n, Route, View_Default) {
       if ( ! $form.get(0).checkValidity()) {
         return false;
       }
-      console.error('XXX: Not implemented.');
+      Route.post('SignUp#index', $form.serialize());
     },
     validatePasswords: function() {
       var $passwords = this.$('[type="password"]'),
