@@ -24,6 +24,17 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
     uuid: function() {
       return (this._uuid ++);
     },
+    navigate: function(fragment, options) {
+      Route._guardHistory('Route.prototype.navigate');
+      options || (options = {});
+      Backbone.Router.prototype.navigate.apply(this, [fragment, _.extend({}, options, {
+        trigger: false
+      })]);
+      if (('trigger' in options) && ! options.trigger) {
+        return false;
+      }
+      Backbone.history.loadUrl();
+    },
     process: function(options, args) {
       var copy = __request;
       __request = null;
@@ -189,9 +200,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
     if (options.navigate === false) {
       return Backbone.history.loadUrl(fragment);
     } else {
-      return Route.instance().navigate(fragment, _.extend({
-        trigger: true
-      }, options));
+      return Route.instance().navigate(fragment, options);
     }
   };
 
