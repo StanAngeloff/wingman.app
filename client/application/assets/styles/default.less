@@ -2,6 +2,49 @@ body, p, label, input, button, select, textarea, .navbar-search {
   font-family: "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+@-webkit-keyframes uiDelayedFadeIn {
+  0%   { opacity: 0.5; }
+  50%  { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@-webkit-keyframes uiSpin {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+#loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: wait;
+  -webkit-animation-name: uiDelayedFadeIn;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+
+  .indicator {
+    @width: 64px;
+    @height: 64px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: @width;
+    height: @height;
+    margin-top: (@height / 2) * -1;
+    margin-left: (@width / 2) * -1;
+    background: url('application/assets/images/loading.svg') no-repeat 0 0;
+    -webkit-animation-name: uiSpin;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+  }
+}
+
 #login, #signup {
   position: absolute;
   top: 0;

@@ -33,9 +33,12 @@ define('Controller/SignUp', function(Controller, Form) {
       })();
     },
     _process: function(params, form) {
+      var loading;
+      loading = define(function(View_Loading) {
+        return new View_Loading().display();
+      })();
       form.values(params);
-      console.error(form);
-      console.error('XXX: Not implement.');
+      throw 'XXX: Not implemented.';
     }
   });
 });
