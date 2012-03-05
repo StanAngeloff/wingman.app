@@ -41,6 +41,35 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
   };
 
   /**
+   * Get or set the target DOM element for the <code>View</code>.
+   *
+   * @param {DOMElement|jQuery|String} target When present, acts as a setter.
+   * @return {DOMElement}
+   */
+  View.prototype.target = function(target) {
+    if (typeof (target) !== 'undefined') {
+      this._target = target;
+    }
+    if (_.isObject(this._target) && this._target.length) {
+      return this._target;
+    }
+    if (this._target.nodeType) {
+      this._target = $(this._target);
+    } else {
+      var query = ('#' + this._target),
+          $element = $(query);
+      if ( ! $element.length) {
+        throw new ResourceError(I18n.format("':method' could not find target element, DOM query was ':query'.", {
+          ':method': 'View.target',
+          ':query': query
+        }), 1330103038);
+      }
+      this._target = $element;
+    }
+    return this._target;
+  };
+
+  /**
    * Get the contents of a template from the DOM.
    *
    * @param {String} template The template name where <code>'/'</code> acts as a delimiter.
@@ -72,14 +101,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
    * @see <a href="http://documentcloud.github.com/backbone/#View-render">View (Backbone.js)</a>
    */
   View.prototype.display = function(template, context) {
-    var query = ('#' + this._target),
-        $element = $(query);
-    if ( ! $element.length) {
-      throw new ResourceError(I18n.format("':method' could not find element to update, DOM query was ':query'.", {
-        ':method': 'View.display',
-        ':query': query
-      }), 1330103038);
-    }
+    var $element = this.target();
     $element.html(this.toString.apply(this, arguments));
     this.setElement($element);
     this.delegateEvents();
