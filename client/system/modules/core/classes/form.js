@@ -68,6 +68,19 @@ function(Form_Control, I18n, ArgumentError) {
   };
 
   /**
+   * Get all form controls.
+   *
+   * @return {Array}
+   */
+  Form.prototype.controls = function() {
+    var self = this, controls = {};
+    _.each(_.keys(this._controls), function(key) {
+      controls[key] = self.control(key);
+    });
+    return controls;
+  };
+
+  /**
    * Retrieve or put values in the form controls.
    *
    * @param {Object} params When present, puts the list of <code>{ key: value }</code> pairs in the form where each <code>key</code> is the name of a control.
