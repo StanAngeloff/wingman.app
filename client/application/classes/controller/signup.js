@@ -26,17 +26,12 @@ define('Controller/SignUp', function(Controller, Form) {
       if (this.request().method === 'POST') {
         this._process(this.request().params, form);
       }
-      define(function(View_SignUp_Index) {
-        new View_SignUp_Index().display({
-          form: form
-        });
-      })();
+      new (require('View/SignUp/Index'))().display({
+        form: form
+      });
     },
     _process: function(params, form) {
-      var loading;
-      loading = define(function(View_Loading) {
-        return new View_Loading().display();
-      })();
+      var loading = new (require('View/Loading'))().display();
       form.values(params);
       throw 'XXX: Not implemented.';
     }

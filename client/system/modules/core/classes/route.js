@@ -44,38 +44,32 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
         action: true,
         name: true
       });
-      var invoke = function(controller) {
-        if ( ! (options.action in controller)) {
-          throw new ResourceError(I18n.format("Route ':route' (:name) failed as the requested controller does not have a method for action ':action' defined.", {
-            ':route': options.route,
-            ':name': options.name,
-            ':action': options.action
-          }), 1329669800);
-        }
-        controller.request(_.extend({}, copy, options));
-        controller[options.action].apply(controller, args);
-      };
-      this._instance(options.controller, options.name, invoke);
+      var controller = this._create(options.controller, options.name);
+      if ( ! (options.action in controller)) {
+        throw new ResourceError(I18n.format("Route ':route' (:name) failed as the requested controller does not have a method for action ':action' defined.", {
+          ':route': options.route,
+          ':name': options.name,
+          ':action': options.action
+        }), 1329669800);
+      }
+      controller.request(_.extend({}, copy, options));
+      controller[options.action].apply(controller, args);
     },
     routeToRegExp: function() {
       return this._routeToRegExp.apply(this, arguments);
     },
-    _instance: function(controller, name, block) {
+    _create: function(controller, name) {
       if (name in this._controllers) {
-        return block(this._controllers[name]);
+        return this._controllers[name];
       }
-      var self = this;
-      var cache = function(instance) {
-        self._controllers[name] = instance;
-        block(instance);
-      };
+      var klass;
       if (_.isObject(controller)) {
-        cache(new controller());
+        klass = controller;
       } else {
-        define(['Controller/' + controller], function(klass) {
-          cache(new klass());
-        })();
+        klass = require('Controller/' + controller);
       }
+      this._controllers[name] = (new klass);
+      return this._controllers[name];
     }
   });
 

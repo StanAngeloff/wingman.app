@@ -19,11 +19,9 @@ define('Controller/Login', function(Controller, Form, Route) {
       if (this.request().method === 'POST') {
         this._process(this.request().params, form);
       }
-      define(function(View_Login_Index) {
-        new View_Login_Index().display({
-          form: form
-        });
-      })();
+      new (require('View/Login/Index'))().display({
+        form: form
+      });
     },
     _process: function(params, form) {
       form.values(params);

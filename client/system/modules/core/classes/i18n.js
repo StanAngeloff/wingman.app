@@ -40,9 +40,7 @@ define('I18n', function() {
     translate: function(message) {
       if ( ! this._cached) {
         try {
-          __cache[this._language] = (define(['I18n/' + this._language], function(messages) {
-            return messages;
-          }))();
+          __cache[this._language] = require('I18n/' + this._language);
         } catch (e) {
           __cache[this._language] = {};
         }
