@@ -1,10 +1,11 @@
 define('View/Engine',
 /**
  * @requires module:I18n
+ * @requires module:Util
  * @requires module:Error~NotImplementedError
  * @exports View/Engine
  */
-function(I18n, NotImplementedError) {
+function(I18n, Util, NotImplementedError) {
   /**
    * Create a new instance of a <code>View</code> HTML engine.
    *
@@ -47,11 +48,12 @@ function(I18n, NotImplementedError) {
    * <p>In order to be able to register partials, helpers, etc. which persist across different views,
    * we need a singleton instance of each <code>View</code> engine.</p>
    *
-   * @return {Route}
+   * @methodOf module:View/Engine~Engine
+   * @name module:View/Engine~Engine.instance
+   * @static
+   * @return {Engine}
    */
-  Engine.instance = function() {
-    return (this.__instance || (this.__instance = new this()));
-  };
+  Engine = Util.singleton(Engine);
 
   return Engine;
 });

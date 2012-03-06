@@ -5,9 +5,10 @@ define('Route',
  * @requires module:I18n
  * @requires module:Error~RuntimeError
  * @requires module:QueryString
+ * @requires module:Util
  * @exports Route
  */
-function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeError) {
+function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, RuntimeError) {
   var __request, __routes = {};
   /**
    * Create a new instance of a router.
@@ -76,13 +77,14 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
   /**
    * Create and return a singleton instance of a <code>Route</code>.
    *
-   * <p>There should be one and only once instance per application.</p>
+   * <p>There should be one and only one instance per application.</p>
    *
+   * @methodOf module:Route~Route
+   * @name module:Route~Route.instance
+   * @static
    * @return {Route}
    */
-  Route.instance = function() {
-    return (this.__instance || (this.__instance = new this()));
-  };
+  Route = Util.singleton(Route);
 
   /**
    * Define a new route for the application.

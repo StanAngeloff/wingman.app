@@ -1,6 +1,6 @@
-define('View/Loading', function(View) {
+define('View/Loading', function(View, Util) {
   var $loading;
-  var klass = View.extend({
+  var klass = Util.singleton(View.extend({
     display: function() {
       var $element = this.target();
       this.destroy();
@@ -17,10 +17,7 @@ define('View/Loading', function(View) {
       $loading && $loading.remove();
       return this;
     }
-  });
-  klass.instance = function() {
-    return (this.__instance || (this.__instance = new this()));
-  };
+  }));
   klass.begin = function() {
     this.instance().display();
   }
