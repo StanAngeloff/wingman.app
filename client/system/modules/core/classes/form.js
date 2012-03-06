@@ -68,13 +68,20 @@ function(Form_Control, I18n, ArgumentError) {
   };
 
   /**
-   * Load the given values into the form controls.
+   * Retrieve or put values in the form controls.
    *
-   * @param {Object} params A list of <code>{ key: value }</code> pairs where each <code>key</code> is the name of a control within the form.
+   * @param {Object} params When present, puts the list of <code>{ key: value }</code> pairs in the form where each <code>key</code> is the name of a control.
    * @param {Object} options Optional configuration. <code>{ exclude }</code> can be set to an <code>Array</code> to filter out certain control types, e.g., <code>password</code>.
-   * @return {Form} A reference to self (useful for chaining methods).
+   * @return {Form} When retrieving values, a <code>{ key: value }</code> list, otherwise a reference to self (useful for chaining methods).
    */
   Form.prototype.values = function(params, options) {
+    if (typeof (params) === 'undefined') {
+      params = {};
+      _.each(this._controls, function(control, name) {
+        params[name] = control.attribute('value');
+      });
+      return params;
+    }
     options = _.extend({
       exclude: ['password']
     }, options);
