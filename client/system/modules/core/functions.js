@@ -61,3 +61,18 @@ var define = (function() {
 
 // Use {} as RandExp checks the type of define.amd and expects 'object'.
 define.amd = {};
+
+/**
+ * Get a reference to a single module, useful for accessing classes.
+ *
+ * <p>This function is a shorthand for <code>define(module, function() { return module; })()</code>.</p>
+ *
+ * @param {String} module The module ID.
+ * @return {Object} A reference to the module.
+ * @see define
+ */
+function require(module) {
+  return (define([module], function(klass) {
+    return klass;
+  }))();
+};
