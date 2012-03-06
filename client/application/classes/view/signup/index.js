@@ -2,14 +2,14 @@ define('View/SignUp/Index', function(I18n, Route, View_Default) {
   return View_Default.extend({
     template: 'signup/index',
     events: {
-      'click .cancel': 'getPrevious',
-      'submit form': 'postSignUp',
+      'click .cancel': 'goPrevious',
+      'submit form': 'processSignUp',
       'input [type="password"]': 'validatePasswords'
     },
-    getPrevious: function() {
+    goPrevious: function() {
       Route.previous();
     },
-    postSignUp: function() {
+    processSignUp: function() {
       event.preventDefault();
       this.validatePasswords();
       var $form = this.$('form');
