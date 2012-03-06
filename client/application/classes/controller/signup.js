@@ -31,7 +31,7 @@ define('Controller/SignUp', function(Controller, Form) {
       });
     },
     _process: function(params, form) {
-      var loading = new (require('View/Loading'))().display();
+      require('View/Loading').begin();
       form.values(params);
       throw 'XXX: Not implemented.';
     }

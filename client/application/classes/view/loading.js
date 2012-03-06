@@ -1,9 +1,9 @@
 define('View/Loading', function(View) {
   var $loading;
-  return View.extend({
+  var klass = View.extend({
     display: function() {
       var $element = this.target();
-      $loading && $loading.remove();
+      this.destroy();
       $element.find('input, button').attr('disabled', true);
       $loading = $('<div>').attr({ id: 'loading' }).append($('<span>').addClass('indicator')).appendTo($element);
       if (document.activeElement) {
@@ -12,6 +12,20 @@ define('View/Loading', function(View) {
         } catch (e) {}
       }
       return this;
+    },
+    destroy: function() {
+      $loading && $loading.remove();
+      return this;
     }
   });
+  klass.instance = function() {
+    return (this.__instance || (this.__instance = new this()));
+  };
+  klass.begin = function() {
+    this.instance().display();
+  }
+  klass.end = function() {
+    this.instance().destroy();
+  }
+  return klass;
 });
