@@ -81,7 +81,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, ResourceError, RuntimeEr
    * @return {Route}
    */
   Route.instance = function() {
-    return (this.__instance || (this.__instance = new Route()));
+    return (this.__instance || (this.__instance = new this()));
   };
 
   /**
