@@ -1,4 +1,4 @@
-define('Controller/Login', function(Controller, Form, Model, QueryString, Route) {
+define('Controller/Login', function(Controller, Form, Model, Route) {
   function createForm() {
     return new Form('login')
       .control('email', {
@@ -23,7 +23,8 @@ define('Controller/Login', function(Controller, Form, Model, QueryString, Route)
     },
     _process: function(params, form) {
       var self = this,
-          loading = require('View/Loading'), values, options;
+          loading = require('View/Loading'),
+          values, options;
       form.values(params, { exclude: false });
       loading.begin();
       values = form.values();
