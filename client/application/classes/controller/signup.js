@@ -30,11 +30,15 @@ define('Controller/SignUp', function(Controller, Form) {
     },
     _process: function(params, form) {
       var self = this,
-          loading = require('View/Loading'), options;
+          loading = require('View/Loading'),
+          values, options;
       form.values(params, { exclude: false });
       loading.begin();
+      values = form.values();
       var model = new (require('Model/User'));
-      model.save(form)
+      model.save(_.extend(values, {
+        password: require('Security').hashPassword(values.password)
+      }))
         .always(function() {
           loading.end();
         }).then(function() {
