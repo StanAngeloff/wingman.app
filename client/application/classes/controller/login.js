@@ -24,15 +24,11 @@ define('Controller/Login', function(Controller, Form, Model, Route) {
     _process: function(params, form) {
       var self = this,
           loading = require('View/Loading'),
-          values, options;
+          options;
       form.values(params, { exclude: false });
       loading.begin();
-      values = form.values();
-      Model.sync('read', new (require('Model/User')), {
-        data: $.param(_.extend(values, {
-          password: require('Security').hashPassword(values.password)
-        }))
-      })
+      var model = new (require('Model/User'));
+      model.set(form).fetch({ data: model.toJSON() })
         .always(function() {
           loading.end();
         }).then(function() {
