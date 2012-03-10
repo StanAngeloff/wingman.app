@@ -9,7 +9,7 @@ define('View/SignUp/Index', function(I18n, Route, View_Default) {
     goPrevious: function() {
       Route.previous();
     },
-    processSignUp: function() {
+    processSignUp: function(event) {
       event.preventDefault();
       this.validatePasswords();
       var $form = this.$('form');
