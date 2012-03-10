@@ -28,6 +28,7 @@ define('I18n/bg-BG', function() {
     "':method' called without any routes set up. See ':relative'.": "':method' беше извикан преди да бъдат дефинирани пътища. Виж ':relative'.",
     "Form ':group' already has a control ':name'.": "Форма ':group' вече съдържа контрола с име ':name'.",
     "':method' does not support format ':format'.": "':method' не поддържа формат ':format'.",
-    ":method failed as there is no history to navigate.": ":method не беше успешен понеже няма предишни страници в историята."
+    ":method failed as there is no history to navigate.": ":method не беше успешен понеже няма предишни страници в историята.",
+    "An instance of a Model was created without a 'name' property.": "Обект от тип Model беше създаден без дефиниран 'name'."
   };
 });
