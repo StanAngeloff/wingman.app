@@ -31,9 +31,11 @@ define('Controller/SignUp', function(Controller, Form) {
       });
     },
     _process: function(params, form) {
+      form.values(params, { exclude: false });
       require('View/Loading').begin();
-      form.values(params);
-      throw 'XXX: Not implemented.';
+      var model = new (require('Model/User'));
+      model.set(form);
+      model.save();
     }
   });
 });
