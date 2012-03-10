@@ -102,8 +102,14 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
    * @see <a href="http://documentcloud.github.com/backbone/#View-render">View (Backbone.js)</a>
    */
   View.prototype.display = function(template, context) {
-    var $element = this.target();
-    $element.html(this.toString.apply(this, arguments));
+    var $element = this.target(),
+        previous = $element.data('__view');
+    if (previous) {
+      previous.undelegateEvents();
+    }
+    $element
+      .data('__view', this)
+      .html(this.toString.apply(this, arguments));
     this.setElement($element);
     this.delegateEvents();
     return this;
