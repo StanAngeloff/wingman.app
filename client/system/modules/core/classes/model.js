@@ -60,6 +60,31 @@ function(Form, I18n, RuntimeError) {
   };
 
   /**
+   * @see <a href="http://documentcloud.github.com/backbone/#Model-fetch">Model.fetch (Backbone.js)</a>
+   */
+  Model.prototype.fetch = function(options) {
+    return this._syncDeferred('fetch', [options]);
+  };
+
+  /**
+   * @see <a href="http://documentcloud.github.com/backbone/#Model-save">Model.save (Backbone.js)</a>
+   */
+  Model.prototype.save = function(key, value, options) {
+    var args = [key, value];
+    if ( ! (_.isObject(key) || key == null)) {
+      args.push(options);
+    }
+    return this._syncDeferred('save', args);
+  };
+
+  /**
+   * @see <a href="http://documentcloud.github.com/backbone/#Model-destroy">Model.destroy (Backbone.js)</a>
+   */
+  Model.prototype.destroy = function(options) {
+    return this._syncDeferred('destroy', [options]);
+  };
+
+  /**
    * Guard against setting propertries on the model which are not explicitly defined.
    *
    * <p>Each model is expected to define an internal <code>defaults</code> hash
@@ -84,6 +109,27 @@ function(Form, I18n, RuntimeError) {
       });
     }
     return Backbone.Model.prototype._validate.apply(this, [attrs, options]);
+  };
+
+  /**
+   * @private
+   */
+  Model.prototype._syncDeferred = function(method, args) {
+    if (typeof ($.Deferred) === 'undefined') {
+      throw new RuntimeError(I18n.translate("'$' does not include support for 'Deferred' which is required by Models."), 1331385036);
+    }
+    var previous = args.pop(), options,
+        deferred = $.Deferred();
+    previous || (previous = {});
+    options = _.clone(previous);
+    _.each({ success: 'resolve', error: 'reject' }, function(state, result) {
+      options[result] = function() {
+        deferred[state].apply(deferred, arguments);
+        return (previous[result] && previous[result].apply(previous, arguments));
+      }
+    });
+    Backbone.Model.prototype[method].apply(this, args.concat([options]));
+    return deferred;
   };
 
   /**

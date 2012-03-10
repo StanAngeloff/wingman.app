@@ -29,6 +29,7 @@ define('I18n/bg-BG', function() {
     "Form ':group' already has a control ':name'.": "Форма ':group' вече съдържа контрола с име ':name'.",
     "':method' does not support format ':format'.": "':method' не поддържа формат ':format'.",
     ":method failed as there is no history to navigate.": ":method не беше успешен понеже няма предишни страници в историята.",
-    "An instance of a Model was created without a 'name' property.": "Обект от тип Model беше създаден без дефиниран 'name'."
+    "An instance of a Model was created without a 'name' property.": "Обект от тип Model беше създаден без дефиниран 'name'.",
+    "'$' does not include support for 'Deferred' which is required by Models.": "'$' не поддържа 'Deferred', което е необходимо за Моделите."
   };
 });
