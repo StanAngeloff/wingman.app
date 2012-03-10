@@ -14,14 +14,15 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
    * Create a new instance of a <code>View</code>.
    *
    * @class A view performs all on-screen updates and handles any User interactions, e.g., clicks.
+   * @param {String} template The template name where <code>'/'</code> acts as a delimiter.
    */
   function View(template) {
+    Backbone.View.apply(this, Array.prototype.slice.call(arguments, 1));
     /** @private */
     this._engine || (this._engine = __engine);
     /** @private */
-    this.template || (this.template = template);
-    /** @private */
     this._target || (this._target = '__page');
+    this.template || (this.template = template);
     this.initialize.apply(this, arguments);
     return this;
   };
