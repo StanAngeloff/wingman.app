@@ -34,8 +34,11 @@ define('Controller/SignUp', function(Controller, Form) {
       form.values(params, { exclude: false });
       require('View/Loading').begin();
       var model = new (require('Model/User'));
-      model.set(form);
-      model.save();
+      model.save(form).then(function() {
+        console.error("XXX: 'success' not implemented.");
+      }, function() {
+        console.error("XXX: 'error' not implemented.");
+      });
     }
   });
 });
