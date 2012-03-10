@@ -1,8 +1,5 @@
-PLATFORM := linux
-
-CERTS_PATH  := system/config/certs/
-VENDOR_PATH := system/cache/vendor/
-MODULES_PATH := system/modules/
+VENDOR_PATH  := cache/vendor/
+BUNDLES_PATH := bundles/
 
 JQUERY_VERSION  := 1.7.1
 JQUERY_DOWNLOAD := http://code.jquery.com/jquery-$(JQUERY_VERSION).js
@@ -28,22 +25,16 @@ LESS_PATH     := $(VENDOR_PATH)less/
 RANDEXP_DOWNLOAD := https://raw.github.com/fent/randexp.js/master/build/randexp.min.js
 RANDEXP_PATH     := $(VENDOR_PATH)randexp/
 
-BUNDLE_SCRIPTS := $(MODULES_PATH)core/bundles/scripts-development.js
-BUNDLE_STYLES  := $(MODULES_PATH)core/bundles/styles-development.css
+BUNDLE_SCRIPTS := $(BUNDLES_PATH)scripts-development.js
+BUNDLE_STYLES  := $(BUNDLES_PATH)styles-development.css
 
-MONGOOSE_VERSION      := 3.0
-MONGOOSE_DOWNLOAD     := http://mongoose.googlecode.com/files/mongoose-$(MONGOOSE_VERSION).tgz
-MONGOOSE_PATH         := $(VENDOR_PATH)mongoose/
-MONGOOSE_OPTIONS      := -D'CONFIG_FILE=\"../../../config/mongoose.config\"'
-MONGOOSE_CERT_SUBJECT := /C=GB/ST=Oxfordshire/L=Oxford/O=Fake Company Ltd./OU=IT/CN=localhost
-
-.PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone install-handlebars install-less install-randexp bundle-dependencies bundle-component bundle-scripts bundle-styles issue-local-certificate compile-local-server start-local-server
+.PHONY: default all install-dependencies install-script install-jquery install-bootstrap install-underscore install-backbone install-handlebars install-less install-randexp bundle-dependencies bundle-component bundle-scripts bundle-styles
 
 default:
 	@echo "No default $(MAKE) target configured."
 	@exit 1
 
-all: install-dependencies bundle-dependencies compile-local-server
+all: install-dependencies bundle-dependencies
 
 install-dependencies: install-jquery install-bootstrap install-underscore install-backbone install-handlebars install-less install-randexp
 
@@ -117,24 +108,3 @@ bundle-styles:
 	@$(MAKE) bundle-component \
 		COMPONENT=STYLES \
 		DEPENDENCIES='"$(BOOTSTRAP_PATH)styles/bootstrap.css"'
-
-issue-local-certificate:
-	@mkdir -p "$(CERTS_PATH)"
-	@openssl req -x509 -nodes -days 3650 -subj "$(MONGOOSE_CERT_SUBJECT)" -newkey rsa:1024 -keyout "$(CERTS_PATH)mongoose.pem" -out "$(CERTS_PATH)mongoose.pem"
-	@echo 'Certificate for local development server issued successfully.'
-
-compile-local-server: issue-local-certificate
-	$(eval MONGOOSE_TMP := /tmp/$(shell basename $(MONGOOSE_DOWNLOAD)))
-	@curl -so "$(MONGOOSE_TMP)" "$(MONGOOSE_DOWNLOAD)"
-	@if [ -d "$(MONGOOSE_PATH)" ]; then \
-		rm -Rf "$(MONGOOSE_PATH)" ; \
-	fi
-	@tar zxf "$(MONGOOSE_TMP)" -C "$(VENDOR_PATH)"
-	@( cd "$(MONGOOSE_PATH)" && $(MAKE) $(PLATFORM) COPT=$(MONGOOSE_OPTIONS) )
-	@echo 'Local development server compiled successfully.'
-
-start-local-server:
-	@if [ ! -f "$(MONGOOSE_PATH)mongoose" ]; then \
-		$(MAKE) compile-local-server; \
-	fi
-	@"$(MONGOOSE_PATH)mongoose"
