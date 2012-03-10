@@ -24,21 +24,31 @@ define('Controller/SignUp', function(Controller, Form) {
     index: function() {
       var form = createForm();
       if (this.request().method === 'POST') {
-        this._process(this.request().params, form);
+        return this._process(this.request().params, form);
       }
-      new (require('View/SignUp/Index'))().display({
-        form: form
-      });
+      this._displayForm(form);
     },
     _process: function(params, form) {
+      var self = this,
+          loading = require('View/Loading'), options;
       form.values(params, { exclude: false });
-      require('View/Loading').begin();
+      loading.begin();
       var model = new (require('Model/User'));
-      model.save(form).then(function() {
-        console.error("XXX: 'success' not implemented.");
-      }, function() {
-        console.error("XXX: 'error' not implemented.");
-      });
+      model.save(form)
+        .always(function() {
+          loading.end();
+        }).then(function() {
+          console.error("XXX: 'success' not implemented.");
+        }, function(model, request) {
+          options = { failure: request.responseText };
+        }).always(function() {
+          self._displayForm(form, options);
+        });
+    },
+    _displayForm: function(form, options) {
+      new (require('View/SignUp/Index'))().display(_.extend({
+        form: form
+      }, options));
     }
   });
 });
