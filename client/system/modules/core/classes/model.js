@@ -1,11 +1,10 @@
 define('Model',
 /**
- * @requires module:Form
  * @requires module:I18n
  * @requires module:Error~RuntimeError
  * @exports Model
  */
-function(Form, I18n, RuntimeError) {
+function(I18n, RuntimeError) {
   /**
    * Create a new instance of a <code>Model</code>.
    *
@@ -29,16 +28,16 @@ function(Form, I18n, RuntimeError) {
    * Set a hash of model attributes on the object, firing <code>change</code>
    * unless you choose to silence it.
    *
-   * <p>You may also pass a <code>Form</code> object and its values will be
-   * used to populate the model.</p>
+   * <p>You may also pass an object that defines a <code>.values(..)</code>
+   * method which will be used to populate the model.</p>
    *
-   * @param {module:Form~Form|Object|String} key
+   * @param {Object|String} key
    * @param {Object} value
    * @param {Object} options
    * @return {Model} A reference to self (useful for chaining methods).
    */
   Model.prototype.set = function(key, value, options) {
-    if (key instanceof Form) {
+    if (_.isObject(key) && _.isFunction(key.values)) {
       key = key.values();
     }
     return Backbone.Model.prototype.set.apply(this, [key, value, options]);
