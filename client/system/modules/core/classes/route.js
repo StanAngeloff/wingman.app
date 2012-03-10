@@ -3,9 +3,10 @@ define('Route',
  * @requires module:Controller
  * @requires module:Guard
  * @requires module:I18n
- * @requires module:Error~RuntimeError
  * @requires module:QueryString
  * @requires module:Util
+ * @requires module:Error~ResourceError
+ * @requires module:Error~RuntimeError
  * @exports Route
  */
 function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, RuntimeError) {
