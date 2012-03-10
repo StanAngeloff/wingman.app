@@ -6,6 +6,12 @@
       </header>
       <div class=modal-body>
         <p>{{translate "login.instructions"}}</p>
+        {{#if failure}}
+          <div class="alert alert-error">
+            <a class=close data-dismiss=alert>&times;</a>
+            <span class=pre>{{failure}}</span>
+          </div>
+        {{/if}}
         {{{control form.email}}}
         {{{control form.password}}}
       </div>

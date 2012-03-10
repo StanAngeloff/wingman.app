@@ -1,4 +1,4 @@
-define('Controller/Login', function(Controller, Form, Route) {
+define('Controller/Login', function(Controller, Form, Model, QueryString, Route) {
   function createForm() {
     return new Form('login')
       .control('email', {
@@ -17,16 +17,34 @@ define('Controller/Login', function(Controller, Form, Route) {
     index: function() {
       var form = createForm();
       if (this.request().method === 'POST') {
-        this._process(this.request().params, form);
+        return this._process(this.request().params, form);
       }
-      new (require('View/Login/Index'))().display({
-        form: form
-      });
+      this._displayForm(form);
     },
     _process: function(params, form) {
-      form.values(params);
-      console.error(form);
-      console.error('XXX: Not implement.');
+      var self = this,
+          loading = require('View/Loading'), values, options;
+      form.values(params, { exclude: false });
+      loading.begin();
+      values = form.values();
+      values.password = 'XXX: ********';
+      Model.sync('read', new (require('Model/User')), {
+        data: $.param(values)
+      })
+        .always(function() {
+          loading.end();
+        }).then(function() {
+          console.error("XXX: 'success' not implemented.");
+        }, function(request) {
+          options = { failure: request.responseText };
+        }).always(function() {
+          self._displayForm(form, options);
+        });
+    },
+    _displayForm: function(form, options) {
+      new (require('View/Login/Index'))().display(_.extend({
+        form: form
+      }, options));
     }
   });
 });
