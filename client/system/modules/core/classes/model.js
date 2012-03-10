@@ -144,6 +144,13 @@ function(Form, I18n, RuntimeError) {
   Model.extend = Backbone.Model.extend;
 
   /**
+   * @see <a href="http://documentcloud.github.com/backbone/#Backbone-sync">Backbone.sync (Backbone.js)</a>
+   */
+  Model.sync = function() {
+    return Backbone.sync.apply(Backbone, arguments);
+  };
+
+  /**
    * The root for sync URLs.
    *
    * <p>You may want to override this if your back-end is not at <code>/</code>.</p>
