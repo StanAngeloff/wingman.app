@@ -20,6 +20,7 @@ for module_path in available_modules:
       ('functions.js', None),
       ('bundles', '*.css'),
       ('bundles', '*.js'),
+      ('config', '*.js'),
       ('classes', '*.js'),
       ('i18n', '*.js'),
       ('templates', '*.hbs'),

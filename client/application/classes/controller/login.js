@@ -27,9 +27,10 @@ define('Controller/Login', function(Controller, Form, Model, QueryString, Route)
       form.values(params, { exclude: false });
       loading.begin();
       values = form.values();
-      values.password = 'XXX: ********';
       Model.sync('read', new (require('Model/User')), {
-        data: $.param(values)
+        data: $.param(_.extend(values, {
+          password: require('Security').hashPassword(values.password)
+        }))
       })
         .always(function() {
           loading.end();
