@@ -122,7 +122,10 @@ function(Form, I18n, RuntimeError) {
         deferred = $.Deferred();
     previous || (previous = {});
     options = _.clone(previous);
-    _.each({ success: 'resolve', error: 'reject' }, function(state, result) {
+    _.each({
+      success: 'resolve',
+      error: 'reject'
+    }, function(state, result) {
       options[result] = function() {
         deferred[state].apply(deferred, arguments);
         return (previous[result] && previous[result].apply(previous, arguments));
