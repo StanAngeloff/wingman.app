@@ -2,11 +2,11 @@ define('View/SignUp/Index', function(I18n, Route, View_Default) {
   return View_Default.extend({
     template: 'signup/index',
     events: {
-      'click .cancel': 'goPrevious',
+      'click .cancel': 'goToPrevious',
       'submit form': 'processSignUp',
       'input [type="password"]': 'validatePasswords'
     },
-    goPrevious: function() {
+    goToPrevious: function() {
       Route.previous();
     },
     processSignUp: function(event) {
