@@ -33,7 +33,7 @@ define('controller/login', ['underscore', 'controller', 'form', 'model', 'route'
           loading.end();
         }).then(function() {
           console.error("XXX: 'success' not implemented.");
-        }, function(request) {
+        }, function(model, request) {
           options = { failure: request.responseText };
         }).always(function() {
           self._displayForm(form, options);
