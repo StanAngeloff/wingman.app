@@ -1,26 +1,26 @@
 define('controller/login', ['underscore', 'controller', 'form', 'model', 'route', 'model/user', 'view/loading', 'view/login/index'],
 function(_, Controller, Form, Model, Route, ModelUser, ViewLoading, ViewLoginIndex) {
-  function createForm() {
-    return new Form('login')
-      .control('email', {
-        type: 'email',
-        size: 20,
-        required: true,
-        autofocus: true
-      })
-      .control('password', {
-        type: 'password',
-        size: 10,
-        required: true
-      });
-  };
   return Controller.extend({
     index: function() {
-      var form = createForm();
+      var form = this._createForm();
       if (this.request().method === 'POST') {
         return this._process(this.request().params, form);
       }
       this._displayForm(form);
+    },
+    _createForm: function() {
+      return new Form('login')
+        .control('email', {
+          type: 'email',
+          size: 20,
+          required: true,
+          autofocus: true
+        })
+        .control('password', {
+          type: 'password',
+          size: 10,
+          required: true
+        });
     },
     _process: function(params, form) {
       var self = this,

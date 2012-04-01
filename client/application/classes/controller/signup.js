@@ -1,33 +1,33 @@
 define('controller/signup', ['underscore', 'controller', 'form', 'model/user', 'view/loading', 'view/signup/index'],
 function(_, Controller, Form, ModelUser, ViewLoading, ViewSignupIndex) {
-  function createForm() {
-    return new Form('signup')
-      .control('email', {
-        type: 'email',
-        size: 20,
-        required: true,
-        autofocus: true
-      })
-      .control('password', {
-        type: 'password',
-        size: 10,
-        required: true,
-        minlegth: 6
-      })
-      .control('password2', {
-        type: 'password',
-        size: 10,
-        required: true,
-        minlegth: 6
-      });
-  };
   return Controller.extend({
     index: function() {
-      var form = createForm();
+      var form = this._createForm();
       if (this.request().method === 'POST') {
         return this._process(this.request().params, form);
       }
       this._displayForm(form);
+    },
+    _createForm: function() {
+      return new Form('signup')
+        .control('email', {
+          type: 'email',
+          size: 20,
+          required: true,
+          autofocus: true
+        })
+        .control('password', {
+          type: 'password',
+          size: 10,
+          required: true,
+          minlegth: 6
+        })
+        .control('password2', {
+          type: 'password',
+          size: 10,
+          required: true,
+          minlegth: 6
+        });
     },
     _process: function(params, form) {
       var self = this,
