@@ -1,7 +1,7 @@
 define('view/loading', ['jquery', 'view', 'util'],
 function($, View, Util) {
   var $loading;
-  var klass = Util.singleton(View.extend({
+  var klass = View.extend({
     display: function() {
       var $element = this.target();
       this.destroy();
@@ -18,12 +18,13 @@ function($, View, Util) {
       $loading && $loading.remove();
       return this;
     }
-  }));
+  });
   klass.begin = function() {
     this.instance().display();
   }
   klass.end = function() {
     this.instance().destroy();
   }
+  klass = Util.singleton(klass);
   return klass;
 });
