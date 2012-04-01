@@ -9,8 +9,9 @@ project_path = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 available_modules = []
 system_path = os.path.join(project_path, 'system', 'modules')
 for dirname in os.listdir(system_path):
-  if os.path.isdir(os.path.join(system_path, dirname)):
-    available_modules.append(os.path.join(system_path, dirname))
+  module_path = os.path.join(system_path, dirname)
+  if os.path.isdir(module_path):
+    available_modules.append(module_path)
 available_modules.append(os.path.join(project_path, 'application'))
 
 # Scan each module in order.
