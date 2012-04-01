@@ -1,4 +1,5 @@
-define('controller/login', ['underscore', 'controller', 'form', 'model', 'route', 'require'], function(_, Controller, Form, Model, Route, require) {
+define('controller/login', ['underscore', 'controller', 'form', 'model', 'route', 'model/user', 'view/loading', 'view/login/index'],
+function(_, Controller, Form, Model, Route, ModelUser, ViewLoading, ViewLoginIndex) {
   function createForm() {
     return new Form('login')
       .control('email', {
@@ -23,14 +24,13 @@ define('controller/login', ['underscore', 'controller', 'form', 'model', 'route'
     },
     _process: function(params, form) {
       var self = this,
-          loading = require('view/loading'),
           options;
       form.values(params, { exclude: false });
-      loading.begin();
-      var model = new (require('model/user'));
+      ViewLoading.begin();
+      var model = new ModelUser();
       model.set(form).fetch({ data: model.toJSON() })
         .always(function() {
-          loading.end();
+          ViewLoading.end();
         }).then(function() {
           console.error("XXX: 'success' not implemented.");
         }, function(model, request) {
@@ -40,7 +40,7 @@ define('controller/login', ['underscore', 'controller', 'form', 'model', 'route'
         });
     },
     _displayForm: function(form, options) {
-      new (require('view/login/index'))().display(_.extend({
+      new ViewLoginIndex().display(_.extend({
         form: form
       }, options));
     }

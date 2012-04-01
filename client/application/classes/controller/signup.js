@@ -1,4 +1,5 @@
-define('controller/signup', ['underscore', 'controller', 'form', 'require'], function(_, Controller, Form, require) {
+define('controller/signup', ['underscore', 'controller', 'form', 'model/user', 'view/loading', 'view/signup/index'],
+function(_, Controller, Form, ModelUser, ViewLoading, ViewSignupIndex) {
   function createForm() {
     return new Form('signup')
       .control('email', {
@@ -30,14 +31,13 @@ define('controller/signup', ['underscore', 'controller', 'form', 'require'], fun
     },
     _process: function(params, form) {
       var self = this,
-          loading = require('view/loading'),
           options;
       form.values(params, { exclude: false });
-      loading.begin();
-      var model = new (require('model/user'));
+      ViewLoading.begin();
+      var model = new ModelUser();
       model.save(form)
         .always(function() {
-          loading.end();
+          ViewLoading.end();
         }).then(function() {
           console.error("XXX: 'success' not implemented.");
         }, function(model, request) {
@@ -47,7 +47,7 @@ define('controller/signup', ['underscore', 'controller', 'form', 'require'], fun
         });
     },
     _displayForm: function(form, options) {
-      new (require('view/signup/index'))().display(_.extend({
+      new ViewSignupIndex().display(_.extend({
         form: form
       }, options));
     }
