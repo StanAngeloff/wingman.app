@@ -1,7 +1,7 @@
 VENDOR_PATH  := cache/vendor/
 BUNDLES_PATH := bundles/
 
-JQUERY_VERSION  := 1.7.1
+JQUERY_VERSION  := 1.7.2
 JQUERY_DOWNLOAD := http://code.jquery.com/jquery-$(JQUERY_VERSION).js
 JQUERY_PATH     := $(VENDOR_PATH)jquery/
 
@@ -18,7 +18,7 @@ HANDLEBARS_VERSION  := 1.0.0.beta.6
 HANDLEBARS_DOWNLOAD := http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-$(HANDLEBARS_VERSION).js
 HANDLEBARS_PATH     := $(VENDOR_PATH)handlebars/
 
-LESS_VERSION  := 1.2.2
+LESS_VERSION  := 1.3.0
 LESS_DOWNLOAD := https://raw.github.com/cloudhead/less.js/master/dist/less-$(LESS_VERSION).js
 LESS_PATH     := $(VENDOR_PATH)less/
 
