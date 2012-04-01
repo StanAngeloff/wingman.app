@@ -1,4 +1,4 @@
-define('Controller/SignUp', function(Controller, Form) {
+define('controller/signup', ['underscore', 'controller', 'form', 'require'], function(_, Controller, Form, require) {
   function createForm() {
     return new Form('signup')
       .control('email', {
@@ -30,11 +30,11 @@ define('Controller/SignUp', function(Controller, Form) {
     },
     _process: function(params, form) {
       var self = this,
-          loading = require('View/Loading'),
+          loading = require('view/loading'),
           options;
       form.values(params, { exclude: false });
       loading.begin();
-      var model = new (require('Model/User'));
+      var model = new (require('model/user'));
       model.save(form)
         .always(function() {
           loading.end();
@@ -47,7 +47,7 @@ define('Controller/SignUp', function(Controller, Form) {
         });
     },
     _displayForm: function(form, options) {
-      new (require('View/SignUp/Index'))().display(_.extend({
+      new (require('view/signup/index'))().display(_.extend({
         form: form
       }, options));
     }

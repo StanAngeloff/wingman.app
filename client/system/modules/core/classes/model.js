@@ -1,22 +1,24 @@
-define('Model',
+define('model', ['backbone', 'underscore', 'i18n', 'exceptions'],
 /**
- * @requires module:I18n
- * @requires module:Error~RuntimeError
- * @exports Model
+ * @requires module:backbone
+ * @requires module:underscore
+ * @requires module:i18n
+ * @requires module:exceptions
+ * @exports model
  */
-function(I18n, RuntimeError) {
+function(Backbone, _, I18n, Exceptions) {
   /**
    * Create a new instance of a <code>Model</code>.
    *
    * @class A Model handles data on the client and communicating with the server on updates.
    * @param {String} name The model name which will take part in the sync URL.
-   * @throws {module:Error~RuntimeError} If no name has been defined.
+   * @throws {module:exceptions~RuntimeException} If no name has been defined.
    */
   function Model(name) {
     Backbone.Model.apply(this, Array.prototype.slice.call(arguments, 1));
     this.name || (this.name = name);
     if ( ! this.name) {
-      throw new RuntimeError(I18n.translate("An instance of a Model was created without a 'name' property."), 1331383243);
+      throw new (Exceptions.RuntimeException)(I18n.translate("An instance of a Model was created without a 'name' property."), 1331383243);
     }
     return this;
   };
@@ -115,7 +117,7 @@ function(I18n, RuntimeError) {
    */
   Model.prototype._syncDeferred = function(method, args) {
     if (typeof ($.Deferred) === 'undefined') {
-      throw new RuntimeError(I18n.translate("'$' does not include support for 'Deferred' which is required by Models."), 1331385036);
+      throw new (Exceptions.RuntimeException)(I18n.translate("'$' does not include support for 'Deferred' which is required by Models."), 1331385036);
     }
     var previous = args.pop(), options,
         deferred = $.Deferred();

@@ -1,10 +1,14 @@
 /**
  * A module to deal with internationalization and localization.
  *
- * @module I18n
+ * @module i18n
  */
 
-define('I18n', function() {
+define('i18n', ['underscore', 'require'],
+/**
+ * @requires module:underscore
+ */
+function(_, require) {
   var __cache = {};
   return {
     /** @private */
@@ -40,7 +44,7 @@ define('I18n', function() {
     translate: function(message) {
       if ( ! this._cached) {
         try {
-          __cache[this._language] = require('I18n/' + this._language);
+          __cache[this._language] = require('i18n/' + this._language);
         } catch (e) {
           __cache[this._language] = {};
         }

@@ -1,10 +1,11 @@
-define('Form/Control',
+define('form/control', ['underscore', 'i18n', 'exceptions'],
 /**
- * @requires I18n
- * @requires module:Error~RuntimeError
- * @exports Form/Control
+ * @requires module:underscore
+ * @requires module:i18n
+ * @requires module:exceptions
+ * @exports form/control
  */
-function(I18n, RuntimeError) {
+function(_, I18n, Exceptions) {
   /**
    * Create a new instance of a <code>Control</code>.
    *
@@ -53,14 +54,14 @@ function(I18n, RuntimeError) {
    *
    * @param {String} format The format of the output (default is 'HTML').
    * @return {String}
-   * @throws {module:Error~RuntimeError} If the format is not supported.
+   * @throws {module:exceptions~RuntimeException} If the format is not supported.
    */
   Control.prototype.toString = function(format) {
     format || (format = 'HTML');
     if (format === 'HTML') {
       return this.toHTMLString.apply(this, Array.prototype.slice.call(arguments).slice(1));
     }
-    throw new RuntimeError(I18n.format("':method' does not support format ':format'.", {
+    throw new (Exceptions.RuntimeException)(I18n.format("':method' does not support format ':format'.", {
       ':method': 'Control.toString',
       ':format': format
     }), 1330268351);

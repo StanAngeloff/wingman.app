@@ -31,7 +31,7 @@ $(MONGOOSE_BINARY):
 	$(eval MONGOOSE_TMP  := $(MONGOOSE_PATH)/$(shell basename $(MONGOOSE_DOWNLOAD)))
 	@curl -so "$(MONGOOSE_TMP)" "$(MONGOOSE_DOWNLOAD)"
 	@tar zxf "$(MONGOOSE_TMP)" -C "$(MONGOOSE_PATH)"
-	@( cd "$(MONGOOSE_PATH)/mongoose" && $(MAKE) $(PLATFORM) COPT=$(MONGOOSE_OPTIONS) && cp './$(MONGOOSE_BINARY)' "$(TOP)" )
+	@( cd "$(MONGOOSE_PATH)/mongoose" && $(MAKE) --no-print-directory $(PLATFORM) COPT=$(MONGOOSE_OPTIONS) && cp './$(MONGOOSE_BINARY)' "$(TOP)" )
 	@echo 'Local development server compiled successfully.'
 
 start-local-server: compile-local-server

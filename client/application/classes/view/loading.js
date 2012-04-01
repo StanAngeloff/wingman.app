@@ -1,4 +1,4 @@
-define('View/Loading', function(View, Util) {
+define('view/loading', ['jquery', 'view', 'util'], function($, View, Util) {
   var $loading;
   var klass = Util.singleton(View.extend({
     display: function() {

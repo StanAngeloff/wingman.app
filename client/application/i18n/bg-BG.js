@@ -1,4 +1,4 @@
-define('I18n/bg-BG', function() {
+define('i18n/bg-BG', function() {
   return {
     'login.header': 'Добре дошли в Wingman.app',
     'login.instructions': 'Моля идентифицирайте се по-долу преди да продължите.',

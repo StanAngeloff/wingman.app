@@ -1,4 +1,4 @@
-define('Controller/Login', function(Controller, Form, Model, Route) {
+define('controller/login', ['underscore', 'controller', 'form', 'model', 'route', 'require'], function(_, Controller, Form, Model, Route, require) {
   function createForm() {
     return new Form('login')
       .control('email', {
@@ -23,11 +23,11 @@ define('Controller/Login', function(Controller, Form, Model, Route) {
     },
     _process: function(params, form) {
       var self = this,
-          loading = require('View/Loading'),
+          loading = require('view/loading'),
           options;
       form.values(params, { exclude: false });
       loading.begin();
-      var model = new (require('Model/User'));
+      var model = new (require('model/user'));
       model.set(form).fetch({ data: model.toJSON() })
         .always(function() {
           loading.end();
@@ -40,7 +40,7 @@ define('Controller/Login', function(Controller, Form, Model, Route) {
         });
     },
     _displayForm: function(form, options) {
-      new (require('View/Login/Index'))().display(_.extend({
+      new (require('view/login/index'))().display(_.extend({
         form: form
       }, options));
     }

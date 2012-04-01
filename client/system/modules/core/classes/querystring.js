@@ -1,12 +1,13 @@
-define('QueryString',
+define('querystring', ['underscore'],
 /**
  * The QueryString module adds support for serializing JavaScript objects into
  * query strings and parsing JavaScript objects from query strings format.
  *
- * @exports QueryString
+ * @requires module:underscore
+ * @exports querystring
  * @see https://github.com/yui/yui3/blob/master/src/querystring/js/querystring-parse.js
  */
-function() {
+function(_) {
 /**
  * The QueryString module adds support for serializing JavaScript objects into
  * query strings and parsing JavaScript objects from query strings format.
