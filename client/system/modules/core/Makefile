@@ -72,14 +72,139 @@ install-bootstrap:
 	done
 	@echo "$(BOOTSTRAP_DOWNLOAD) successfully installed in $(BOOTSTRAP_PATH)."
 
+define UNDERSCORE_AMD_PATCH
+--- underscore.js	2012-01-01 12:00:00.000000000 +0000
++++ underscore.js	2012-01-01 12:00:00.000000000 +0000
+@@ -996,4 +996,12 @@
+		 return this._wrapped;
+	 };
+ 
++  // AMD define happens at the end for compatibility with AMD loaders
++  // that don't enforce next-turn semantics on modules.
++  if (typeof define === 'function' && define.amd) {
++    define('underscore', function() {
++      return _;
++    });
++  }
++
+ }).call(this);
+endef
+export UNDERSCORE_AMD_PATCH
 install-underscore:
 	@$(MAKE) --no-print-directory install-script SCRIPT=UNDERSCORE
+	@( cd $(UNDERSCORE_PATH) && echo "$$UNDERSCORE_AMD_PATCH" | patch --no-backup-if-mismatch -p0 )
 
+define BACKBONE_AMD_PATCH
+--- backbone.js	2012-01-01 12:00:00.000000000 +0000
++++ backbone.js	2012-01-01 12:00:00.000000000 +0000
+@@ -5,15 +5,27 @@
+ //     For all details and documentation:
+ //     http://backbonejs.org
+ 
+-(function(){
++(function(root, factory) {
++  // Set up Backbone appropriately for the environment.
++  if (typeof exports !== 'undefined') {
++    // Node/CommonJS, no need for jQuery in that case.
++    factory(root, exports, require('underscore'));
++  } else if (typeof define === 'function' && define.amd) {
++    // AMD
++    define('backbone', ['underscore', 'jquery', 'exports'], function(_, $$, exports) {
++      // Export global even in AMD case in case this script is loaded with
++      // others that may still expect a global Backbone.
++      root.Backbone = factory(root, exports, _, $$);
++    });
++  } else {
++    // Browser globals
++    root.Backbone = factory(root, {}, root._, (root.jQuery || root.Zepto || root.ender));
++  }
++}(this, function(root, Backbone, _, $$) {
+ 
+   // Initial Setup
+   // -------------
+ 
+-  // Save a reference to the global object (`window` in the browser, `global`
+-  // on the server).
+-  var root = this;
+-
+   // Save the previous value of the `Backbone` variable, so that it can be
+   // restored later on, if `noConflict` is used.
+   var previousBackbone = root.Backbone;
+@@ -22,32 +34,16 @@
+   var slice = Array.prototype.slice;
+   var splice = Array.prototype.splice;
+ 
+-  // The top-level namespace. All public Backbone classes and modules will
+-  // be attached to this. Exported for both CommonJS and the browser.
+-  var Backbone;
+-  if (typeof exports !== 'undefined') {
+-    Backbone = exports;
+-  } else {
+-    Backbone = root.Backbone = {};
+-  }
+-
+   // Current version of the library. Keep in sync with `package.json`.
+   Backbone.VERSION = '0.9.2';
+ 
+-  // Require Underscore, if we're on the server, and it's not already present.
+-  var _ = root._;
+-  if (!_ && (typeof require !== 'undefined')) _ = require('underscore');
+-
+-  // For Backbone's purposes, jQuery, Zepto, or Ender owns the `$$` variable.
+-  var $$ = root.jQuery || root.Zepto || root.ender;
+-
+   // Set the JavaScript library that will be used for DOM manipulation and
+   // Ajax calls (a.k.a. the `$$` variable). By default Backbone will use: jQuery,
+   // Zepto, or Ender; but the `setDomLibrary()` method lets you inject an
+   // alternate JavaScript library (or a mock library for testing your views
+   // outside of a browser).
+   Backbone.setDomLibrary = function(lib) {
+-    $$ = lib;
++    $$ = Backbone;
+   };
+ 
+   // Runs Backbone.js in *noConflict* mode, returning the `Backbone` variable
+@@ -1428,4 +1424,5 @@
+     throw new Error('A "url" property or function must be specified');
+   };
+ 
+-}).call(this);
++  return Backbone;
++}));
+endef
+export BACKBONE_AMD_PATCH
 install-backbone:
 	@$(MAKE) --no-print-directory install-script SCRIPT=BACKBONE
+	@( cd $(BACKBONE_PATH) && echo "$$BACKBONE_AMD_PATCH" | patch --no-backup-if-mismatch -p0 )
 
+define HANDLEBARS_AMD_PATCH
+--- $(shell basename $(HANDLEBARS_DOWNLOAD))	2012-01-01 12:00:00.000000000 +0000
++++ $(shell basename $(HANDLEBARS_DOWNLOAD))	2012-01-01 12:00:00.000000000 +0000
+@@ -1,3 +1,5 @@
++(function() {
++
+ // lib/handlebars/base.js
+ var Handlebars = {};
+ 
+@@ -1548,3 +1550,13 @@
+ 
+ Handlebars.template = Handlebars.VM.template;
+ ;
++
++// AMD define happens at the end for compatibility with AMD loaders
++// that don't enforce next-turn semantics on modules.
++if (typeof define === 'function' && define.amd) {
++  define('handlebars', function() {
++    return Handlebars;
++  });
++}
++
++}).call(this);
+endef
+export HANDLEBARS_AMD_PATCH
 install-handlebars:
 	@$(MAKE) --no-print-directory install-script SCRIPT=HANDLEBARS
+	@( cd $(HANDLEBARS_PATH) && echo "$$HANDLEBARS_AMD_PATCH" | patch --no-backup-if-mismatch -p0 )
 
 install-less:
 	@$(MAKE) --no-print-directory install-script SCRIPT=LESS
