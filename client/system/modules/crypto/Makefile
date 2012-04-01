@@ -43,6 +43,6 @@ bundle-component:
 	@echo "Bundle '$(COMPONENT)' created successfully."
 
 bundle-scripts:
-	@$(MAKE) bundle-component \
+	@$(MAKE) --no-print-directory bundle-component \
 		COMPONENT=SCRIPTS \
 		DEPENDENCIES='"$(SJCL_PATH)sjcl.js"'

@@ -44,7 +44,7 @@ install-script:
 	@echo "$($(SCRIPT)_DOWNLOAD) successfully installed in $($(SCRIPT)_PATH)."
 
 install-jquery:
-	@$(MAKE) install-script SCRIPT=JQUERY
+	@$(MAKE) --no-print-directory install-script SCRIPT=JQUERY
 
 install-bootstrap:
 	$(eval BOOTSTRAP_TMP := /tmp/$(shell basename $(BOOTSTRAP_DOWNLOAD)))
@@ -73,19 +73,19 @@ install-bootstrap:
 	@echo "$(BOOTSTRAP_DOWNLOAD) successfully installed in $(BOOTSTRAP_PATH)."
 
 install-underscore:
-	@$(MAKE) install-script SCRIPT=UNDERSCORE
+	@$(MAKE) --no-print-directory install-script SCRIPT=UNDERSCORE
 
 install-backbone:
-	@$(MAKE) install-script SCRIPT=BACKBONE
+	@$(MAKE) --no-print-directory install-script SCRIPT=BACKBONE
 
 install-handlebars:
-	@$(MAKE) install-script SCRIPT=HANDLEBARS
+	@$(MAKE) --no-print-directory install-script SCRIPT=HANDLEBARS
 
 install-less:
-	@$(MAKE) install-script SCRIPT=LESS
+	@$(MAKE) --no-print-directory install-script SCRIPT=LESS
 
 install-randexp:
-	@$(MAKE) install-script SCRIPT=RANDEXP
+	@$(MAKE) --no-print-directory install-script SCRIPT=RANDEXP
 
 bundle-dependencies: bundle-scripts bundle-styles
 	@echo "Bundles created successfully."
@@ -100,11 +100,11 @@ bundle-component:
 	@echo "Bundle '$(COMPONENT)' created successfully."
 
 bundle-scripts:
-	@$(MAKE) bundle-component \
+	@$(MAKE) --no-print-directory bundle-component \
 		COMPONENT=SCRIPTS \
 		DEPENDENCIES='"$(JQUERY_PATH)$(shell basename $(JQUERY_DOWNLOAD))" "$(BOOTSTRAP_PATH)scripts/bootstrap.js" "$(UNDERSCORE_PATH)$(shell basename $(UNDERSCORE_DOWNLOAD))" "$(BACKBONE_PATH)$(shell basename $(BACKBONE_DOWNLOAD))" "$(HANDLEBARS_PATH)$(shell basename $(HANDLEBARS_DOWNLOAD))" "$(LESS_PATH)$(shell basename $(LESS_DOWNLOAD))" "$(RANDEXP_PATH)$(shell basename $(RANDEXP_DOWNLOAD))"'
 
 bundle-styles:
-	@$(MAKE) bundle-component \
+	@$(MAKE) --no-print-directory bundle-component \
 		COMPONENT=STYLES \
 		DEPENDENCIES='"$(BOOTSTRAP_PATH)styles/bootstrap.css"'
