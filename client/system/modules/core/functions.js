@@ -2,77 +2,104 @@
  * Define a module with optional dependencies.
  *
  * @function
- * @param {String} module Optional module ID. If this is omitted, no module is defined and instead <code>block</code> is called immediately.
- * @param {Array} dependencies Optional list of module IDs on which this module depends. If this is omitted, the arguments list of <code>block</code> will be used instead where all underscores will be converted to <code>'/'</code>.
- * @param {Function} block The module body. The function is called with arguments matching the given dependencies, if any.
+ * @param {String} id Optional module ID. If this is omitted, no module is defined and instead <code>factory</code> is called immediately.
+ * @param {Array} dependencies Optional list of module IDs on which this module depends.
+ * @param {Function} factory The module body. The function is called with arguments matching the given dependencies, if any.
  * @return {Function} The module body with dependencies injected.
  */
 var define = (function() {
-  var __modules = {};
-  return function(module, dependencies, block) {
-    if (_.isFunction(module)) {
-      block = module;
-      module = dependencies = null;
-    } else if (typeof (block) === 'undefined') {
-      block = dependencies;
+  /** @private */
+  var __evaluate = {};
+  /**
+   * Get a reference to a single module.
+   *
+   * <p>The function is available when explicitly specified in a dependency list.</p>
+   *
+   * @param {String} module The module ID.
+   * @return {Object} A reference to the module.
+   */
+  var require = function(id) {
+    if (typeof (id) === 'string') {
+      return (define([id], function(module) {
+        return module;
+      }))();
+    }
+    return define.apply(define, arguments);
+  };
+  return function(id, dependencies, factory) {
+    if (typeof (factory) === 'undefined') {
+      factory = dependencies;
       dependencies = null;
     }
-    if (_.isArray(module)) {
-      dependencies = module;
-      module = null;
+    if (typeof (id) !== 'string') {
+      dependencies = id;
+      id = null;
     }
-    if (dependencies === null) {
-      var signature = /^\s*function\s*\(([^)]+)\)/.exec(block.toString());
-      if (signature) {
-        dependencies = _.map(signature[1].split(','), function(value) {
-          return value.replace(/^\s+|\s+$/g, '').replace(/_/g, '/');
-        });
-      } else {
-        dependencies = [];
-      }
+    dependencies || (dependencies = []);
+    if ( ! dependencies.length && factory.length) {
+      dependencies = ['require', 'exports', 'module'];
     }
     var evaluate = function() {
-      var args = [], exports;
+      var i, length, dependency,
+          args = [],
+          hasExports = false,
+          exports, module, result;
       evaluate = function() {
         throw new Error("Circular dependency in module '" + module + " depends [" + dependencies.join(', ') + "]'.");
       };
-      _.each(dependencies, function(dependency) {
-        if ( ! (dependency in __modules)) {
-          throw new Error("Broken dependency in module '" + module + "', dependency '" + dependency + "' was not satisfied.");
+      for (i = 0, length = dependencies.length; dependency = dependencies[i], i < length; i ++) {
+        if (dependency === 'require') {
+          args.push(require);
+        } else if (dependency === 'exports') {
+          exports = {};
+          args.push(exports);
+          hasExports = true;
+        } else if (dependency === 'module') {
+          module = {
+            id: id,
+            uri: '',
+            exports: exports
+          };
+          args.push(module);
+        } else {
+          if ( ! (dependency in __evaluate)) {
+            throw new Error("Broken dependency in module '" + module + "', dependency '" + dependency + "' was not satisfied.");
+          }
+          args.push(__evaluate[dependency]());
         }
-        args.push(__modules[dependency]());
-      });
-      exports = block.apply(block, args);
+      }
+      if (typeof (factory) === 'function') {
+        result = factory.apply(factory, args);
+      } else {
+        result = factory;
+      }
+      if (module && module.exports) {
+        exports = module.exports;
+      } else if ( ! hasExports) {
+        exports = result;
+      }
       evaluate = function() {
         return exports;
       };
       return evaluate();
     };
-    if (module === null) {
-      return evaluate;
-    } else {
-      __modules[module] = function() {
+    if (id) {
+      __evaluate[id] = function() {
         return evaluate.apply(evaluate, arguments);
       };
-      return __modules[module];
+      return __evaluate[id];
+    } else {
+      return evaluate;
     }
   };
 })();
 
-// Use {} as RandExp checks the type of define.amd and expects 'object'.
-define.amd = {};
-
 /**
- * Get a reference to a single module, useful for accessing classes.
+ * To allow a clear indicator that a global `define` function conforms to the AMD API,
+ * set a property called 'amd' whose value is an object.
  *
- * <p>This function is a shorthand for <code>define(module, function() { return module; })()</code>.</p>
- *
- * @param {String} module The module ID.
- * @return {Object} A reference to the module.
- * @see define
+ * @see https://github.com/amdjs/amdjs-api/wiki/AMD
  */
-function require(module) {
-  return (define([module], function(klass) {
-    return klass;
-  }))();
+define.amd = {
+  jQuery: true
 };
