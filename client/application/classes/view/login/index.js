@@ -1,4 +1,5 @@
-define('view/login/index', ['route', 'view/default'], function(Route, ViewDefault) {
+define('view/login/index', ['route', 'view/default'],
+function(Route, ViewDefault) {
   return ViewDefault.extend({
     template: 'login/index',
     events: {

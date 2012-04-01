@@ -1,4 +1,5 @@
-define('model/user', ['underscore', 'crypto', 'config/security', 'model'], function(_, Crypto, ConfigSecurity, Model) {
+define('model/user', ['underscore', 'crypto', 'config/security', 'model'],
+function(_, Crypto, ConfigSecurity, Model) {
   return Model.extend({
     name: 'user',
     defaults: {

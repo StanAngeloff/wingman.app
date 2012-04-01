@@ -1,4 +1,5 @@
-define('view/default', ['i18n', 'view'], function(I18n, View) {
+define('view/default', ['i18n', 'view'],
+function(I18n, View) {
   return View.extend({
     translate: function() {
       return I18n.translate.apply(I18n, arguments);

@@ -1,4 +1,5 @@
-define('view/signup/index', ['jquery', 'underscore', 'i18n', 'route', 'view/default'], function($, _, I18n, Route, ViewDefault) {
+define('view/signup/index', ['jquery', 'underscore', 'i18n', 'route', 'view/default'],
+function($, _, I18n, Route, ViewDefault) {
   return ViewDefault.extend({
     template: 'signup/index',
     events: {
