@@ -1,8 +1,9 @@
-define('Controller',
+define('controller', ['backbone'],
 /**
- * @exports Controller
+ * @requires module:backbone
+ * @exports controller
  */
-function() {
+function(Backbone) {
   /**
    * Create a new instance of a <code>Controller</code>.
    *

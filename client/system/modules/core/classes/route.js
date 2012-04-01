@@ -1,15 +1,17 @@
-define('Route',
+define('route', ['backbone', 'underscore', 'querystring', 'RandExp', 'controller', 'guard',  'i18n', 'util', 'exceptions', 'require'],
 /**
- * @requires module:Controller
- * @requires module:Guard
- * @requires module:I18n
- * @requires module:QueryString
- * @requires module:Util
- * @requires module:Error~ResourceError
- * @requires module:Error~RuntimeError
- * @exports Route
+ * @requires module:backbone
+ * @requires module:underscore
+ * @requires module:querystring
+ * @requires module:RandExp
+ * @requires module:controller
+ * @requires module:guard
+ * @requires module:i18n
+ * @requires module:util
+ * @requires module:exceptions
+ * @exports route
  */
-function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, RuntimeError) {
+function(Backbone, _, QueryString, RandExp, Controller, Guard, I18n, Util, Exceptions, require) {
   var __request, __routes = {};
   /**
    * Create a new instance of a router.
@@ -48,7 +50,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, Run
       });
       var controller = this._create(options.controller, options.name);
       if ( ! (options.action in controller)) {
-        throw new ResourceError(I18n.format("Route ':route' (:name) failed as the requested controller does not have a method for action ':action' defined.", {
+        throw new (Exceptions.ResourceException)(I18n.format("Route ':route' (:name) failed as the requested controller does not have a method for action ':action' defined.", {
           ':route': options.route,
           ':name': options.name,
           ':action': options.action
@@ -68,7 +70,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, Run
       if (_.isObject(controller)) {
         klass = controller;
       } else {
-        klass = require('Controller/' + controller);
+        klass = require('controller/' + controller);
       }
       this._controllers[name] = (new klass);
       return this._controllers[name];
@@ -80,8 +82,8 @@ function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, Run
    *
    * <p>There should be one and only one instance per application.</p>
    *
-   * @methodOf module:Route~Route
-   * @name module:Route~Route.instance
+   * @methodOf module:route~Route
+   * @name module:route~Route.instance
    * @static
    * @return {Route}
    */
@@ -147,7 +149,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, Run
    * @see <a href="http://documentcloud.github.com/backbone/#History-start">History (Backbone.js)</a>
    * @param {Object} options Optional hash of <code>{ key: value }</code> pairs to pass to Backbone.js.
    * @return {Route} A reference to self (useful for chaining methods).
-   * @throws {module:Error~RuntimeError} If no routes have been registered.
+   * @throws {module:exceptions~RuntimeException} If no routes have been registered.
    */
   Route.start = function(options) {
     this._guardHistory('Route.start');
@@ -166,7 +168,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, Run
    *
    * @param {Object} ...options A hash of options for the navigation. <code>{ controller, action }</code> must be specified.
    * @see <a href="http://documentcloud.github.com/backbone/#Route-navigate">Route (Backbone.js)</a>
-   * @throws {module:Error~ResourceError} If no route has been registered.
+   * @throws {module:exceptions~ResourceException} If no route has been registered.
    */
   Route.get = function() {
     __request = null;
@@ -183,7 +185,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, Run
     this._guardHistory('Route.get');
     var key = (options.controller + '#' + options.action);
     if ( ! (key in __routes)) {
-      throw new ResourceError(I18n.format(":method ':key' failed as there is no controller with that action registered.", {
+      throw new (Exceptions.ResourceException)(I18n.format(":method ':key' failed as there is no controller with that action registered.", {
         ':method': options.method,
         ':key': key
       }), 1330255988);
@@ -232,12 +234,12 @@ function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, Run
    *
    * @param {Object} options A hash of options for the navigation. There can be used to pass optional <code>params</code>.
    * @see <a href="https://developer.mozilla.org/en/DOM/window.history">window.history (MDN)</a>
-   * @throws {module:Error~ResourceError} If no previous URLs are available in the history.
+   * @throws {module:exceptions~ResourceException} If no previous URLs are available in the history.
    */
   Route.previous = function(options) {
     __request = null;
     if (history.length <= 1) {
-      throw new ResourceError(I18n.format(":method failed as there is no history to navigate.", {
+      throw new (Exceptions.ResourceException)(I18n.format(":method failed as there is no history to navigate.", {
         ':method': 'PREVIOUS'
       }), 1330364780);
     }
@@ -267,7 +269,7 @@ function(Controller, Guard, I18n, QueryString, RandExp, Util, ResourceError, Run
    */
   Route._guardHistory = function(method) {
     if (typeof (Backbone.history) === 'undefined') {
-      throw new RuntimeError(I18n.format("':method' called without any routes set up. See ':relative'.", {
+      throw new (Exceptions.RuntimeException)(I18n.format("':method' called without any routes set up. See ':relative'.", {
         ':method': method,
         ':relative': 'Route.match'
       }), 1329505536);

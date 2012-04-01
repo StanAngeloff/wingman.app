@@ -1,9 +1,9 @@
-define('View/Engine/Default',
+define('view/engine/default', ['view/engine/handlebars'],
 /**
- * @exports View/Engine/Default
- * @requires module:View/Engine/Handlebars
- * @see module:View/Engine/Handlebars
+ * @exports view/engine/default
+ * @requires module:view/engine/handlebars
+ * @see module:view/engine/handlebars
  */
-function(View_Engine_Handlebars) {
-  return View_Engine_Handlebars;
+function(ViewEngineDefault) {
+  return ViewEngineDefault;
 });

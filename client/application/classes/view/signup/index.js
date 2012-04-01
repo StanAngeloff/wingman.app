@@ -1,5 +1,5 @@
-define('View/SignUp/Index', function(I18n, Route, View_Default) {
-  return View_Default.extend({
+define('view/signup/index', ['jquery', 'underscore', 'i18n', 'route', 'view/default'], function($, _, I18n, Route, ViewDefault) {
+  return ViewDefault.extend({
     template: 'signup/index',
     events: {
       'click .cancel': 'goToPrevious',
@@ -16,7 +16,7 @@ define('View/SignUp/Index', function(I18n, Route, View_Default) {
       if ( ! $form.get(0).checkValidity()) {
         return false;
       }
-      Route.post('SignUp#index', $form.serialize());
+      Route.post('signup#index', $form.serialize());
     },
     validatePasswords: function() {
       var $passwords = this.$('[type="password"]'),

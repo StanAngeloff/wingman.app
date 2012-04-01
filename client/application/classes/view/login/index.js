@@ -1,5 +1,5 @@
-define('View/Login/Index', function(Route, View_Default) {
-  return View_Default.extend({
+define('view/login/index', ['route', 'view/default'], function(Route, ViewDefault) {
+  return ViewDefault.extend({
     template: 'login/index',
     events: {
       'click .signup': 'goToSignUp',
@@ -7,11 +7,11 @@ define('View/Login/Index', function(Route, View_Default) {
     },
     goToSignUp: function(event) {
       event.preventDefault();
-      Route.get('SignUp#index');
+      Route.get('signup#index');
     },
     processLogin: function(event) {
       event.preventDefault();
-      Route.post('Login#index', this.$('form').serialize());
+      Route.post('login#index', this.$('form').serialize());
     }
   });
 });

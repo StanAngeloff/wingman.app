@@ -1,11 +1,12 @@
-define('Form',
+define('form', ['underscore', 'form/control', 'i18n', 'exceptions'],
 /**
- * @requires module:Form/Control~Control
- * @requires module:I18n
- * @requires module:Error~ArgumentError
+ * @requires module:underscore
+ * @requires module:form/control
+ * @requires module:i18n
+ * @requires module:exceptions
  * @exports Form
  */
-function(Form_Control, I18n, ArgumentError) {
+function(_, FormControl, I18n, Exceptions) {
   /**
    * Create a new instance of a <code>Form</code>.
    *
@@ -36,24 +37,24 @@ function(Form_Control, I18n, ArgumentError) {
    * Get or set (add) a control with the given name.
    *
    * @param {String} name The control name.
-   * @param {Object|module:Form/Control~Control} attributes A list of <code>{ key: value }</code> pairs.
+   * @param {Object|module:form/control~Control} attributes A list of <code>{ key: value }</code> pairs.
    * @return {Object} If a setter, a reference to self (useful for chaining methods).
-   * @throws {module:Error~ArgumentError} If a control with the given name already exists.
+   * @throws {module:exceptions~ArgumentException} If a control with the given name already exists.
    */
   Form.prototype.control = function(name, attributes) {
     if (typeof (attributes) !== 'undefined') {
       if (name in this._controls) {
-        throw new ArgumentError(I18n.format("Form ':group' already has a control ':name'.", {
+        throw new (Exceptions.ArgumentException)(I18n.format("Form ':group' already has a control ':name'.", {
           ':group': this._group,
           ':name': name
         }), 1330267555);
       }
       var control;
-      if (attributes instanceof Form_Control) {
+      if (attributes instanceof FormControl) {
         control = attributes;
       } else {
         var self = this;
-        control = new Form_Control(function() {
+        control = new FormControl(function() {
           return (self._group + '[' + name + ']');
         }, _.extend({
           id: function() {

@@ -1,11 +1,12 @@
-define('View/Engine',
+define('view/engine', ['backbone', 'i18n', 'util', 'exceptions'],
 /**
- * @requires module:I18n
- * @requires module:Util
- * @requires module:Error~NotImplementedError
- * @exports View/Engine
+ * @requires module:backbone
+ * @requires module:i18n
+ * @requires module:util
+ * @requires module:exceptions
+ * @exports view/engine
  */
-function(I18n, Util, NotImplementedError) {
+function(Backbone, I18n, Util, Exceptions) {
   /**
    * Create a new instance of a <code>View</code> HTML engine.
    *
@@ -25,10 +26,10 @@ function(I18n, Util, NotImplementedError) {
    * Compiles the template into a JavaScript function.
    *
    * @abstract
-   * @throws {module:Error~NotImplementedError}
+   * @throws {module:exceptions~NotImplementedException}
    */
   Engine.prototype.compile = function() {
-    throw new NotImplementedError(I18n.format("Method ':method' in class ':class' is marked as abstract and must be implemented in derived classes.", {
+    throw new (Exceptions.NotImplementedException)(I18n.format("Method ':method' in class ':class' is marked as abstract and must be implemented in derived classes.", {
       ':method': 'compile',
       ':class': 'Engine'
     }), 1330100902);
@@ -48,8 +49,8 @@ function(I18n, Util, NotImplementedError) {
    * <p>In order to be able to register partials, helpers, etc. which persist across different views,
    * we need a singleton instance of each <code>View</code> engine.</p>
    *
-   * @methodOf module:View/Engine~Engine
-   * @name module:View/Engine~Engine.instance
+   * @methodOf module:view/engine~Engine
+   * @name module:view/engine~Engine.instance
    * @static
    * @return {Engine}
    */

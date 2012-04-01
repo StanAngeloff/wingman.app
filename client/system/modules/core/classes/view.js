@@ -1,14 +1,16 @@
-define('View',
+define('view', ['jquery', 'underscore', 'guard', 'i18n', 'view/engine', 'view/engine/default', 'exceptions'],
 /**
- * @requires module:Guard
- * @requires module:I18n
- * @requires module:View/Engine~Engine
- * @requires module:View/Engine/Default
- * @requires module:Error~ResourceError
- * @exports View
+ * @requires module:jquery
+ * @requires module:underscore
+ * @requires module:guard
+ * @requires module:i18n
+ * @requires module:view/engine
+ * @requires module:view/engine/default
+ * @requires module:exceptions
+ * @exports view
  */
-function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
-  var __engine = View_Engine_Default;
+function($, _, Guard, I18n, ViewEngine, ViewEngineDefault, Exceptions) {
+  var __engine = ViewEngineDefault;
 
   /**
    * Create a new instance of a <code>View</code>.
@@ -33,8 +35,8 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
   /**
    * Get or set the HTML rendering engine for this view.
    *
-   * @param {module:View/Engine~Engine} engine When present, acts as a setter.
-   * @return {module:View/Engine~Engine}
+   * @param {module:view/engine~Engine} engine When present, acts as a setter.
+   * @return {module:view/engine~Engine}
    * @see View.engine
    */
   View.prototype.engine = function(engine) {
@@ -60,7 +62,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
       var query = ('#' + this._target),
           $element = $(query);
       if ( ! $element.length) {
-        throw new ResourceError(I18n.format("':method' could not find target element, DOM query was ':query'.", {
+        throw new (Exceptions.ResourceException)(I18n.format("':method' could not find target element, DOM query was ':query'.", {
           ':method': 'View.target',
           ':query': query
         }), 1330103038);
@@ -75,14 +77,14 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
    *
    * @param {String} template The template name where <code>'/'</code> acts as a delimiter.
    * @return {String}
-   * @throws {module:Error~ResourceError} If no template DOM element was found.
+   * @throws {module:exceptions~ResourceException} If no template DOM element was found.
    */
   View.prototype.templateContents = function(template) {
     template || (template = this.template);
     var query = this._DOMQuery(template),
         $element = $(query);
     if ( ! $element.length) {
-      throw new ResourceError(I18n.format("':method' could not find an element for template ':template', DOM query was ':query'.", {
+      throw new (Exceptions.ResourceException)(I18n.format("':method' could not find an element for template ':template', DOM query was ':query'.", {
         ':method': 'View.templateContents',
         ':query': query,
         ':template': template
@@ -97,7 +99,7 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
    * @param {String} template Optional template name.
    * @param {Object} context Optional hash of <code>{ key: values }</code> pairs which will be available in the template only.
    * @return {View} A reference to self (useful for chaining methods).
-   * @throws {module:Error~ResourceError} If no target DOM element was found.
+   * @throws {module:exceptions~ResourceException} If no target DOM element was found.
    * @see View.prototype.toString
    * @see <a href="http://documentcloud.github.com/backbone/#View-render">View (Backbone.js)</a>
    */
@@ -148,15 +150,15 @@ function(Guard, I18n, View_Engine, View_Engine_Default, ResourceError) {
   /**
    * Get or set the HTML rendering engine for a given view or all newly created views.
    *
-   * @param {module:View/Engine~Engine} engine When present, acts as a setter.
+   * @param {module:view/engine~Engine} engine When present, acts as a setter.
    * @param {Object} view Optional view whose engine is being read/set.
-   * @return {module:View/Engine~Engine}
-   * @throws {module:Error~TypeError} If the <code>engine</code> was not an instance of <code>Engine</code>.
-   * @see module:View/Engine/Default
+   * @return {module:view/engine~Engine}
+   * @throws {module:exceptions~TypeException} If the <code>engine</code> was not an instance of <code>Engine</code>.
+   * @see module:view/engine/default
    */
   View.engine = function(engine, view) {
     if (typeof (engine) !== 'undefined') {
-      Guard.expectType('View.engine', 'engine', engine, View_Engine);
+      Guard.expectType('View.engine', 'engine', engine, ViewEngine);
       if (view) {
         view._engine = engine;
       } else {

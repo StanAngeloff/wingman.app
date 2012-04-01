@@ -1,5 +1,3 @@
-define('Config/Security', function() {
-  return {
-    salt: 'XXX: define salt'
-  };
+define('config/security', {
+  salt: 'XXX: define salt'
 });

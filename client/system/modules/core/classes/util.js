@@ -1,17 +1,21 @@
 /**
  * A collection of useful functions.
  *
- * @module Util
+ * @module util
  */
 
-define('Util', function(Guard) {
+define('util', ['guard'],
+/**
+ * @requires module:guard
+ */
+function(Guard) {
   return {
     /**
      * Create an <code>instance(..)</code> static method in the given class.
      *
      * @param {Object} klass The class which will have an <code>instance(..)</code> method added.
      * @return {Object} A reference to the class.
-     * @throws {module:Error~ArgumentError} If <code>klass</code> is not an object.
+     * @throws {module:exceptions~ArgumentException} If <code>klass</code> is not an object.
      */
     singleton: function(klass) {
       Guard.expectType('Util.singleton', 'klass', klass, 'Object');

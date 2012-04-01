@@ -1,14 +1,15 @@
-define('View/Engine/Handlebars',
+define('view/engine/handlebars', ['handlebars', 'view/engine'],
 /**
  * A <code>View</code> engine based on Handlebars.js.
  *
- * @requires module:View/Engine
- * @exports View/Engine/Handlebars
+ * @requires module:handlebars
+ * @requires module:view/engine
+ * @exports view/engine/handlebars
  * @see http://handlebarsjs.com/
  */
-function(View_Engine) {
+function(Handlebars, ViewEngine) {
   var __cache = {};
-  return View_Engine.extend({
+  return ViewEngine.extend({
     compile: function(template, contents) {
       if ( ! (template in __cache)) {
         __cache[template] = Handlebars.compile(contents);
