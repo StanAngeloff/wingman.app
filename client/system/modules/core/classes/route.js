@@ -153,7 +153,13 @@ function(Backbone, _, QueryString, RandExp, Controller, Guard, I18n, Util, Excep
    */
   Route.start = function(options) {
     this._guardHistory('Route.start');
-    Backbone.history.start(options);
+    options || (options = {});
+    var started = Backbone.history.start(options);
+    if ( ! options.silent && ! started) {
+      throw new (Exceptions.ResourceException)(I18n.format(':method failed as there is no route matching the location.', {
+        ':method': 'Route.start'
+      }), 1333783644);
+    }
     return this;
   };
 
