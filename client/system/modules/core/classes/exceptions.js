@@ -1,11 +1,12 @@
-define('exceptions', ['underscore', 'exports'],
+define('exceptions', ['underscore', 'util', 'exports'],
 /**
  * A collection of custom exceptions.
  *
  * @requires module:underscore
+ * @requires module:util
  * @exports exceptions
  */
-function(_, exports) {
+function(_, Util, exports) {
 "use strict";
 /**
  * Create a new instance of a <code>RuntimeException</code>.
@@ -33,8 +34,7 @@ function RuntimeException(message, code) {
   return this;
 };
 
-RuntimeException.prototype = new Error;
-RuntimeException.prototype.constructor = RuntimeException;
+Util.extend(RuntimeException, Error);
 
 exports.RuntimeException = RuntimeException;
 
@@ -49,8 +49,7 @@ function ArgumentException() {
   return this;
 };
 
-ArgumentException.prototype = new RuntimeException();
-ArgumentException.prototype.constructor = ArgumentException;
+Util.extend(ArgumentException, RuntimeException);
 
 exports.ArgumentException = ArgumentException;
 
@@ -65,8 +64,7 @@ function TypeException() {
   return this;
 };
 
-TypeException.prototype = new RuntimeException();
-TypeException.prototype.constructor = TypeException;
+Util.extend(TypeException, RuntimeException);
 
 exports.TypeException = TypeException;
 
@@ -81,8 +79,7 @@ function ResourceException() {
   return this;
 };
 
-ResourceException.prototype = new RuntimeException();
-ResourceException.prototype.constructor = ResourceException;
+Util.extend(ResourceException, RuntimeException);
 
 exports.ResourceException = ResourceException;
 
@@ -97,8 +94,7 @@ function NotImplementedException() {
   return this;
 };
 
-NotImplementedException.prototype = new RuntimeException();
-NotImplementedException.prototype.constructor = NotImplementedException;
+Util.extend(NotImplementedException, RuntimeException);
 
 exports.NotImplementedException = NotImplementedException;
 

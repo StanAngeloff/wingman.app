@@ -1,4 +1,4 @@
-define('view', ['jquery', 'underscore', 'guard', 'i18n', 'view/engine', 'view/engine/default', 'exceptions'],
+define('view', ['jquery', 'underscore', 'guard', 'i18n', 'view/engine', 'view/engine/default', 'util', 'exceptions'],
 /**
  * @requires module:jquery
  * @requires module:underscore
@@ -6,10 +6,11 @@ define('view', ['jquery', 'underscore', 'guard', 'i18n', 'view/engine', 'view/en
  * @requires module:i18n
  * @requires module:view/engine
  * @requires module:view/engine/default
+ * @requires module:util
  * @requires module:exceptions
  * @exports view
  */
-function($, _, Guard, I18n, ViewEngine, ViewEngineDefault, Exceptions) {
+function($, _, Guard, I18n, ViewEngine, ViewEngineDefault, Util, Exceptions) {
   "use strict";
   var __engine = ViewEngineDefault;
 
@@ -30,8 +31,7 @@ function($, _, Guard, I18n, ViewEngine, ViewEngineDefault, Exceptions) {
     return this;
   };
 
-  View.prototype = new Backbone.View();
-  View.prototype.constructor = View;
+  Util.extend(View, Backbone.View);
 
   /**
    * Get or set the HTML rendering engine for this view.

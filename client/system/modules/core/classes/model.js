@@ -1,12 +1,13 @@
-define('model', ['backbone', 'underscore', 'i18n', 'exceptions'],
+define('model', ['backbone', 'underscore', 'i18n', 'util', 'exceptions'],
 /**
  * @requires module:backbone
  * @requires module:underscore
  * @requires module:i18n
+ * @requires module:util
  * @requires module:exceptions
  * @exports model
  */
-function(Backbone, _, I18n, Exceptions) {
+function(Backbone, _, I18n, Util, Exceptions) {
   "use strict";
   /**
    * Create a new instance of a <code>Model</code>.
@@ -24,8 +25,7 @@ function(Backbone, _, I18n, Exceptions) {
     return this;
   };
 
-  Model.prototype = new Backbone.Model();
-  Model.prototype.constructor = Model;
+  Util.extend(Model, Backbone.Model);
 
   /**
    * Set a hash of model attributes on the object, firing <code>change</code>

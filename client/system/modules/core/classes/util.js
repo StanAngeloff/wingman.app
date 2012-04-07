@@ -24,6 +24,11 @@ function(Guard) {
         return (this.__instance || (this.__instance = new this()));
       };
       return klass;
+    },
+    extend: function(klass, using) {
+      klass.prototype = new using();
+      klass.prototype.constructor = klass;
+      return klass;
     }
   };
 });
