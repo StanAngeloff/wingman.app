@@ -13,6 +13,7 @@ setup(
         'Jinja2>=2.6',
         'Werkzeug>=0.8',
         'distribute>=0.6',
+        'pymongo>=2.1',
         'wsgiref>=0.1'
     ],
     author='Stan Angeloff',
