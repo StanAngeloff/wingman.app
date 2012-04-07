@@ -1,7 +1,13 @@
-from flask import Blueprint, current_app, jsonify
+from ..decorators import create, retrieve
+from flask import Blueprint, jsonify
+
 
 user = Blueprint('user', __name__, url_prefix='/user')
 
-@user.route('/<int:id>', methods=['GET'])
+@create(user, '')
+def create():
+    return jsonify(message='user.create()')
+
+@retrieve(user, '/<int:id>')
 def get(id):
     return jsonify(message='user.get(%s)' % id)
