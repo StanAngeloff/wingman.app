@@ -1,5 +1,5 @@
 from ..decorators import create, retrieve
-from flask import Blueprint, jsonify
+from flask import Blueprint, g, jsonify
 
 
 user = Blueprint('user', __name__, url_prefix='/user')

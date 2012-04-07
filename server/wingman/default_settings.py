@@ -1,3 +1,11 @@
 APPLICATION_ROOT = None
 
 DEFAULT_MIME_TYPE = 'application/json'
+
+STORAGE_TYPE = 'mongo'
+
+MONGO_HOST = '127.0.0.1'
+MONGO_PORT = 27017
+MONGO_DBNAME = 'wingman_app'
+MONGO_USERNAME = None
+MONGO_PASSWORD = None

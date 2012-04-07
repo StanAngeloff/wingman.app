@@ -16,8 +16,11 @@ def create_app(config_filepath=None, import_name=None):
         return response
 
     from .blueprints.user import user
+    from .storage import create_storage
 
     app.register_blueprint(user)
+
+    create_storage(app)
 
     return app
 
