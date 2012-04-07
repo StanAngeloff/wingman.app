@@ -11,6 +11,7 @@ define('guard', ['underscore', 'i18n', 'exceptions'],
  * @requires module:exceptions
  */
 function(_, I18n, Exceptions) {
+  "use strict";
   return {
     /**
      * Check if a given argument is of the expected type or throw an error otherwise.

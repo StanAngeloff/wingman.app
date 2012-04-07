@@ -4,6 +4,7 @@ define('controller', ['backbone'],
  * @exports controller
  */
 function(Backbone) {
+  "use strict";
   /**
    * Create a new instance of a <code>Controller</code>.
    *

@@ -9,6 +9,7 @@ define('util', ['guard'],
  * @requires module:guard
  */
 function(Guard) {
+  "use strict";
   return {
     /**
      * Create an <code>instance(..)</code> static method in the given class.

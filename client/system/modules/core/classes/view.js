@@ -10,6 +10,7 @@ define('view', ['jquery', 'underscore', 'guard', 'i18n', 'view/engine', 'view/en
  * @exports view
  */
 function($, _, Guard, I18n, ViewEngine, ViewEngineDefault, Exceptions) {
+  "use strict";
   var __engine = ViewEngineDefault;
 
   /**

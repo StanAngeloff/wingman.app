@@ -8,6 +8,7 @@ define('querystring', ['underscore'],
  * @see https://github.com/yui/yui3/blob/master/src/querystring/js/querystring-parse.js
  */
 function(_) {
+"use strict";
 /**
  * The QueryString module adds support for serializing JavaScript objects into
  * query strings and parsing JavaScript objects from query strings format.

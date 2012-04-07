@@ -9,6 +9,7 @@ define('i18n', ['underscore', 'require'],
  * @requires module:underscore
  */
 function(_, require) {
+  "use strict";
   var __cache = {};
   return {
     /** @private */

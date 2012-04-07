@@ -7,6 +7,7 @@ define('model', ['backbone', 'underscore', 'i18n', 'exceptions'],
  * @exports model
  */
 function(Backbone, _, I18n, Exceptions) {
+  "use strict";
   /**
    * Create a new instance of a <code>Model</code>.
    *

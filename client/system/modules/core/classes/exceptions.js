@@ -6,6 +6,7 @@ define('exceptions', ['underscore', 'exports'],
  * @exports exceptions
  */
 function(_, exports) {
+"use strict";
 /**
  * Create a new instance of a <code>RuntimeException</code>.
  *
@@ -17,7 +18,7 @@ function RuntimeException(message, code) {
   this.name = 'RuntimeException';
   Error.call(this);
   if (Error.captureStackTrace) {
-    Error.captureStackTrace(this, arguments.callee);
+    Error.captureStackTrace(this, RuntimeException);
   }
   _.extend(this, {
     message: message,

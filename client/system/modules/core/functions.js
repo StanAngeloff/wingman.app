@@ -8,6 +8,7 @@
  * @return {Function} The module body with dependencies injected.
  */
 var define = (function() {
+  "use strict";
   /** @private */
   var __evaluate = {};
   /**

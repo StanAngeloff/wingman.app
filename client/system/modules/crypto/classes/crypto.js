@@ -6,5 +6,6 @@ define('crypto',
  * @see http://crypto.stanford.edu/sjcl/
  */
 function() {
+  "use strict";
   return sjcl;
 });

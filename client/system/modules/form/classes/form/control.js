@@ -6,6 +6,7 @@ define('form/control', ['underscore', 'i18n', 'exceptions'],
  * @exports form/control
  */
 function(_, I18n, Exceptions) {
+  "use strict";
   /**
    * Create a new instance of a <code>Control</code>.
    *

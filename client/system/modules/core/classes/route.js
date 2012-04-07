@@ -12,6 +12,7 @@ define('route', ['backbone', 'underscore', 'querystring', 'RandExp', 'controller
  * @exports route
  */
 function(Backbone, _, QueryString, RandExp, Controller, Guard, I18n, Util, Exceptions, require) {
+  "use strict";
   var __request, __routes = {};
   /**
    * Create a new instance of a router.

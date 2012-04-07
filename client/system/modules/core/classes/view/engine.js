@@ -7,6 +7,7 @@ define('view/engine', ['backbone', 'i18n', 'util', 'exceptions'],
  * @exports view/engine
  */
 function(Backbone, I18n, Util, Exceptions) {
+  "use strict";
   /**
    * Create a new instance of a <code>View</code> HTML engine.
    *

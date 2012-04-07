@@ -8,6 +8,7 @@ define('view/engine/handlebars', ['handlebars', 'view/engine'],
  * @see http://handlebarsjs.com/
  */
 function(Handlebars, ViewEngine) {
+  "use strict";
   var __cache = {};
   return ViewEngine.extend({
     compile: function(template, contents) {
