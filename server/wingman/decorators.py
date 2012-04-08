@@ -4,10 +4,10 @@ from functools import update_wrapper
 
 
 def _rest(blueprint, route, methods=None):
-    def decorator(f):
+    def decorator(function):
         return blueprint.route(route, methods=methods)(
             crossdomain(origin='*', headers=['Content-Type'], methods=methods)(
-                f
+                function
             )
         )
     return decorator
