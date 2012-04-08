@@ -19,3 +19,7 @@ class Mongo(Storage):
         if key in app.config:
             return app.config[key]
         return default
+
+    def create(self, *args, **kwargs):
+        [collection] = args
+        return self._db[collection].insert(kwargs)

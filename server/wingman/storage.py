@@ -6,7 +6,8 @@ class StorageError(Exception):
 
 
 class Storage:
-    pass
+    def create(self, *args, **kwargs):
+        raise NotImplementedError('Storage.create(..) must be implemented by derived classes.')
 
 
 def create_storage(app, type=None):
