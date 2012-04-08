@@ -1,1 +1,1 @@
-all = ['mongo']
+__all__ = ['mongo']

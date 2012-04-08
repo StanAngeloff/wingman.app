@@ -6,7 +6,9 @@ def create_storage(app, type=None):
         type = app.config['STORAGE_TYPE']
     klass = type.capitalize()
     module = __import__('%ss.%s' % (__name__, type), globals(), locals(), [klass], -1)
-    initialize = getattr(module, klass)
+    _bind_storage(app, getattr(module, klass))
+
+def _bind_storage(app, initialize):
 
     @app.before_request
     def before_request():
