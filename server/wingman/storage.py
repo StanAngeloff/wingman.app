@@ -1,6 +1,10 @@
 from flask import g
 
 
+class StorageError(Exception):
+    pass
+
+
 def create_storage(app, type=None):
     if type is None:
         type = app.config['STORAGE_TYPE']
