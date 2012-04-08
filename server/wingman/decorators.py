@@ -3,7 +3,7 @@ from flask import make_response, request, current_app
 from functools import update_wrapper
 
 
-def _rest(blueprint, route, methods=None):
+def _crud(blueprint, route, methods=None):
     def decorator(function):
         return blueprint.route(route, methods=methods)(
             crossdomain(origin='*', headers=['Content-Type'], methods=methods)(
@@ -13,16 +13,16 @@ def _rest(blueprint, route, methods=None):
     return decorator
 
 def create(*args):
-    return _rest(*args, methods=['POST', 'OPTIONS'])
+    return _crud(*args, methods=['POST', 'OPTIONS'])
 
 def retrieve(*args):
-    return _rest(*args, methods=['GET', 'OPTIONS'])
+    return _crud(*args, methods=['GET', 'OPTIONS'])
 
 def update(*args):
-    return _rest(*args, methods=['PUT', 'OPTIONS'])
+    return _crud(*args, methods=['PUT', 'OPTIONS'])
 
 def delete(*args):
-    return _rest(*args, methods=['DELETE', 'OPTIONS'])
+    return _crud(*args, methods=['DELETE', 'OPTIONS'])
 
 
 # This snippet by Armin Ronacher can be used freely for anything you like.
