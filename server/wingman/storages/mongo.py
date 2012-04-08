@@ -1,8 +1,8 @@
-from ..storage import StorageError
+from ..storage import Storage, StorageError
 from pymongo import Connection
 
 
-class Mongo:
+class Mongo(Storage):
     def __init__(self, app):
         self._connection = Connection(host=self._config(app, 'host', '127.0.0.1'), port=self._config(app, 'port', 27017))
         self._db = self._connection[self._config(app, 'dbname')]

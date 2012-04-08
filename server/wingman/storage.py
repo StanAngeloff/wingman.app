@@ -5,6 +5,10 @@ class StorageError(Exception):
     pass
 
 
+class Storage:
+    pass
+
+
 def create_storage(app, type=None):
     if type is None:
         type = app.config['STORAGE_TYPE']
@@ -16,7 +20,10 @@ def _bind_storage(app, initialize):
 
     @app.before_request
     def before_request():
-        g.storage = initialize(app)
+        storage = initialize(app)
+        if not isinstance(storage, Storage):
+            raise StorageError("A storage instance was initialized which does not implemented the base 'Storage' class.")
+        g.storage = storage
 
     @app.teardown_request
     def teardown_request(response):
